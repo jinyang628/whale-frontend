@@ -43,11 +43,21 @@ export default function ChatSection({ selectedApplications }: ChatSectionProps) 
         }
     }
 
+    const handleUpdateChatHistory = (chatHistory: Message[]) => {
+        setChatHistory(chatHistory);
+    }
+
+    const handleUpdateReverseStack = (reverseStack: ReverseActionWrapper[]) => {
+        setReverseStack(reverseStack);
+    }
+
     return (
         <div className="flex flex-col w-full space-y-2">  
             <ChatContainer
                 chatHistory={chatHistory}
                 reverseStack={reverseStack}
+                handleUpdateChatHistory={handleUpdateChatHistory}
+                handleUpdateReverseStack={handleUpdateReverseStack}
             />
             <MessageInput
                 handleSendMessage={handleSendMessage}

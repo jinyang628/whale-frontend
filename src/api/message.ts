@@ -8,8 +8,8 @@ const SERVICE_ENDPOINT = "message/send"
 export async function sendMessage(input: SendMessageRequest): Promise<SendMessageResponse> {
     try {
         const response = await axios.post(`${BASE_URL}/${SERVICE_ENDPOINT}`, input);
-        const selectApplicationResponse = sendMessageResponseSchema.parse(response.data)
-        return selectApplicationResponse;
+        const sendMessageResponse = sendMessageResponseSchema.parse(response.data)
+        return sendMessageResponse;
     // TODO: More robust error handling + consider whether we want to rethrow it
     } catch (error) {
         console.error(error);
