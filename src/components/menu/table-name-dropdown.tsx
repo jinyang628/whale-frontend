@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
 import { Table } from "@/types/api/application"
+import { useState } from "react"
 
 interface TableNameDropdownProps {
     allTables: Table[]
@@ -18,12 +19,25 @@ interface TableNameDropdownProps {
 
 export function TableNameDropdown({ allTables, visibleTable, updateVisibleTable }: TableNameDropdownProps) {
 
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const handleOpenChange = (open: boolean) => {
+        if (allTables.length > 0) {
+            setIsOpen(open);
+        }
+    }
+
     return (
-      <DropdownMenu>
+      <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
         <DropdownMenuTrigger asChild>
           <div className="flex flex-col">
             <Label className="flex pb-[5%] justify-center">View Application&apos;s Tables</Label>
-            <Button variant="outline">{visibleTable ? visibleTable : "No Application Selected"}</Button>
+            <Button 
+              variant="outline"
+              disabled={allTables.length === 0}
+            >
+                {visibleTable || "No Application Selected"}
+            </Button>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">

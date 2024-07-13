@@ -1,28 +1,16 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button"
 import { useState } from "react";
+import MessageInput from "./message-input";
+import ChatContainer from "./chat-container";
 
 
 export default function ChatSection() {
-    const [message, setMessage] = useState<string>("")
-    const handleSubmit = async () => {
-        console.log(message)
-    }
+
     return (
-        <>
-            <Input 
-                type="message" 
-                placeholder="Enter instruction here..." 
-                className="w-full" 
-                value={message} 
-                onChange={(e) => setMessage(e.target.value)} 
+        <div className="flex flex-col w-full space-y-2">  
+            <ChatContainer
             />
-            <Button 
-                type="submit"
-                onClick={handleSubmit}
-            >
-                Send
-            </Button>
-        </>
+            <MessageInput
+            />
+        </div>
     );
 }

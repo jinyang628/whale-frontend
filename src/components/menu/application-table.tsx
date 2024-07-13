@@ -15,6 +15,10 @@ interface ApplicationTablesProps {
 
 export default function ApplicationTables({ visibleTable, allTables }: ApplicationTablesProps ) {
     
+    if (visibleTable == "") {
+        return null
+    }
+
     const table: Table | null = allTables.filter(table => table.name === visibleTable)[0]
     const header = <TableHeader>
         <TableRow>
@@ -54,9 +58,11 @@ export default function ApplicationTables({ visibleTable, allTables }: Applicati
     </TableBody>
 
     return (
-        <UITable>
-            {header}
-            {body}
-        </UITable>
+        visibleTable !== "" ? 
+            <UITable>
+                {header}
+                {body}
+            </UITable>
+        : null
     )
 }

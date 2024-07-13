@@ -45,6 +45,12 @@ export default function Home() {
     }
   }
 
+  const removeApplication = (applicationName: string) => {
+    const updatedApplications = selectedApplications.filter(app => app !== applicationName)
+    setSelectedApplicationNames(updatedApplications)
+    setApplicationContentArr(applicationContentArr.filter(app => app.name !== applicationName))
+  }
+
   return (
     <div className="flex flex-col h-screen w-full p-10">
       <div className="flex justify-end items-center mb-4">
@@ -54,6 +60,7 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         <MenuSection 
           selectApplication={selectApplication}
+          removeApplication={removeApplication}
           selectedApplications={selectedApplications}
           applicationContentArr={applicationContentArr}
         />

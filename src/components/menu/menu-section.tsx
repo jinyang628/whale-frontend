@@ -8,11 +8,12 @@ import ApplicationTables from "./application-table";
 
 interface MenuSectionProps {
     selectApplication: (applicationName: string) => void
+    removeApplication: (applicationName: string) => void
     selectedApplications: string[]
     applicationContentArr: ApplicationContent[]
 }
 
-export default function MenuSection({ selectApplication, selectedApplications, applicationContentArr }: MenuSectionProps) {
+export default function MenuSection({ selectApplication, removeApplication, selectedApplications, applicationContentArr }: MenuSectionProps) {
     const [applicationName, updateApplicationName] = useState<string>("")
     const [visibleApplication, setVisibleApplicationName] = useState<string>("")
     const [visibleTable, setVisibleTable] = useState<string>("")
@@ -39,6 +40,10 @@ export default function MenuSection({ selectApplication, selectedApplications, a
             const tables: Table[] = applicationContentArr[applicationContentArr.length - 1].tables
             setAllTables(tables)
             setVisibleTable(tables[0].name)
+        } else {
+            setVisibleApplicationName("")
+            setAllTables([])
+            setVisibleTable("")
         }
     }, [selectedApplications, applicationContentArr])
 
@@ -64,6 +69,7 @@ export default function MenuSection({ selectApplication, selectedApplications, a
                     selectedApplications={selectedApplications}
                     visibleApplication={visibleApplication}
                     updateVisibleApplication={updateVisibleApplication}
+                    removeApplication={removeApplication}
                 />
                 <TableNameDropdown 
                     allTables={allTables}
