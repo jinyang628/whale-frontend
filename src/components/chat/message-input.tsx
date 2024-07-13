@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
+import { Textarea } from "../ui/textarea";
 
 type MessageInputProps = {
     handleSendMessage: (message: string) => void
@@ -15,20 +16,21 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
     }
 
     return (
-        <div className="flex space-x-2">
-            <Input 
-                type="message" 
+        <>
+            <Textarea 
                 placeholder="Enter instruction here..." 
-                className="w-full" 
+                className="w-full h-[15%]" 
                 value={message} 
                 onChange={(e) => setMessage(e.target.value)} 
             />
-            <Button 
-                type="submit"
-                onClick={handleSubmit}
-            >
-                Send
-            </Button>
-        </div>
+            <div className="flex pt-[1%] justify-end">
+                <Button 
+                    type="submit"
+                    onClick={handleSubmit}
+                >
+                    Send
+                </Button>
+            </div>
+        </>
     )
 }

@@ -13,14 +13,14 @@ export default function MessageBlock({ message, role, reverseStack, chatHistory 
     const isAssistantMessage = role === "assistant";
         
     return (
-        <div className={`flex items-end space-x-2 ${isAssistantMessage ? '' : 'justify-end'}`}>
+        <div className={`flex items-end space-x-2 pt-[3%] ${isAssistantMessage ? '' : 'justify-end'}`}>
             {isAssistantMessage && (
                 <Avatar>
                     <AvatarImage src="/assistant.jpg" alt="Assistant" />
                     <AvatarFallback>A</AvatarFallback>
                 </Avatar>
             )}
-            <div className={`p-2 rounded-lg ${isAssistantMessage ? 'bg-gray-100 dark:bg-gray-800' : 'bg-blue-500 text-white'}`}>
+            <div className={`p-2 rounded-lg ${isAssistantMessage ? 'bg-gray-100 dark:bg-gray-800' : 'bg-blue-500 dark:bg-blue-900 text-white'}`}>
                 <p className="text-sm">{message}</p>
             </div>
             {!isAssistantMessage && (
