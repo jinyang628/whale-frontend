@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
-import { ApplicationNameDropdown } from "./applcation-name-dropdown";
+import { ApplicationNameDropdown } from "./application-name-dropdown";
 import { TableNameDropdown } from "./table-name-dropdown";
 import { ApplicationContent, Table } from "@/types/api/application";
 import ApplicationTables from "./application-table";
