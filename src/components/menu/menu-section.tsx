@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
 import { ApplicationNameDropdown } from "./applcation-name-dropdown";
 import { TableNameDropdown } from "./table-name-dropdown";
-import { ApplicationContent } from "@/types/api/application";
+import { ApplicationContent, Table } from "@/types/api/application";
 
 interface MenuSectionProps {
     selectApplication: (applicationName: string) => void
@@ -15,7 +15,7 @@ export default function MenuSection({ selectApplication, selectedApplications, a
     const [applicationName, updateApplicationName] = useState<string>("")
     const [visibleApplication, setVisibleApplicationName] = useState<string>("")
     const [visibleTable, setVisibleTable] = useState<string>("")
-    const [allTables, setAllTables] = useState<string[]>([])
+    const [allTables, setAllTables] = useState<Table[]>([])
 
     const handleSubmit = async () => {
         selectApplication(applicationName)
@@ -23,6 +23,9 @@ export default function MenuSection({ selectApplication, selectedApplications, a
 
     const updateVisibleApplication = (applicationName: string) => {
         setVisibleApplicationName(applicationName)
+        const tables: Table[] = applicationContentArr.filter(app => app.name === applicationName)[0].tables
+        setAllTables(tables)
+        setVisibleTable(tables[0].name)
     }
 
     const updateVisibleTable = (tableName: string) => {
@@ -32,7 +35,9 @@ export default function MenuSection({ selectApplication, selectedApplications, a
     useEffect(() => {
         if (selectedApplications && selectedApplications.length > 0) {
           setVisibleApplicationName(selectedApplications[selectedApplications.length - 1])
-          setAllTables(applicationContentArr[applicationContentArr.length - 1].tables)
+          const tables: Table[] = applicationContentArr[applicationContentArr.length - 1].tables
+          setAllTables(tables)
+          setVisibleTable(tables[0].name)
         }
     }, [selectedApplications, applicationContentArr])
 

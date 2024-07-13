@@ -8,9 +8,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
+import { Table } from "@/types/api/application"
 
 interface TableNameDropdownProps {
-    allTables: string[]
+    allTables: Table[]
     visibleTable: string
     updateVisibleTable: (tableName: string) => void
 }
@@ -28,9 +29,9 @@ export function TableNameDropdown({ allTables, visibleTable, updateVisibleTable 
         <DropdownMenuContent className="w-56">
           <DropdownMenuSeparator />
           <DropdownMenuRadioGroup value={visibleTable} onValueChange={updateVisibleTable}>
-            {allTables && allTables.map((tableName) => (
-              <DropdownMenuRadioItem key={tableName} value={tableName}>
-                {tableName}
+            {allTables && allTables.map((table) => (
+              <DropdownMenuRadioItem key={table.name} value={table.name}>
+                {table.name}
               </DropdownMenuRadioItem>
             ))}
           </DropdownMenuRadioGroup>

@@ -56,6 +56,8 @@ const Table = z.object({
   ),
 });
 
+export type Table = z.infer<typeof Table>;
+
 const ApplicationContent = z.object({
   name: z.string(),
   tables: z.array(Table),
@@ -79,4 +81,3 @@ export type SelectApplicationResponse = z.infer<typeof selectApplicationResponse
 // export type PrimaryKey = z.infer<typeof PrimaryKey>;
 // export type ForeignKey = z.infer<typeof ForeignKey>;
 // export type Column = z.infer<typeof Column>;
-// export type Table = z.infer<typeof Table>;
