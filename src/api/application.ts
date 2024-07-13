@@ -5,7 +5,7 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 const SERVICE_ENDPOINT = "application/select"
 
-export async function fetchApplication(input: SelectApplicationRequest): Promise<SelectApplicationResponse> {
+export async function selectApplication(input: SelectApplicationRequest): Promise<SelectApplicationResponse> {
     try {
         const response = await axios.get(`${BASE_URL}/${SERVICE_ENDPOINT}`, {
             params: input 

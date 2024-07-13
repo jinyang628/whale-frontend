@@ -2,11 +2,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
 
-export default function MessageInput() {
+type MessageInputProps = {
+    handleSendMessage: (message: string) => void
+}
+
+export default function MessageInput({ handleSendMessage }: MessageInputProps) {
     const [message, setMessage] = useState<string>("")
 
     const handleSubmit = async () => {
-        console.log(message)
+        handleSendMessage(message)
+        setMessage("")
     }
 
     return (

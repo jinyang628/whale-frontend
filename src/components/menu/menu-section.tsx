@@ -7,20 +7,21 @@ import { ApplicationContent, Table } from "@/types/api/application";
 import ApplicationTables from "./application-table";
 
 interface MenuSectionProps {
-    selectApplication: (applicationName: string) => void
+    handleSelectApplication: (applicationName: string) => void
     removeApplication: (applicationName: string) => void
     selectedApplications: string[]
     applicationContentArr: ApplicationContent[]
 }
 
-export default function MenuSection({ selectApplication, removeApplication, selectedApplications, applicationContentArr }: MenuSectionProps) {
-    const [applicationName, updateApplicationName] = useState<string>("")
+export default function MenuSection({ handleSelectApplication, removeApplication, selectedApplications, applicationContentArr }: MenuSectionProps) {
+    const [applicationName, setApplicationName] = useState<string>("")
     const [visibleApplication, setVisibleApplicationName] = useState<string>("")
     const [visibleTable, setVisibleTable] = useState<string>("")
     const [allTables, setAllTables] = useState<Table[]>([])
 
     const handleSubmit = async () => {
-        selectApplication(applicationName)
+        handleSelectApplication(applicationName)
+        setApplicationName("")
     }
 
     const updateVisibleApplication = (applicationName: string) => {
@@ -55,7 +56,7 @@ export default function MenuSection({ selectApplication, removeApplication, sele
                     placeholder="Enter application name here..." 
                     className="flex-grow" 
                     value={applicationName} 
-                    onChange={(e) => updateApplicationName(e.target.value)} 
+                    onChange={(e) => setApplicationName(e.target.value)} 
                 />
                 <Button 
                     type="submit"

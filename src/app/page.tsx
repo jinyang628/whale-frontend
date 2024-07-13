@@ -1,6 +1,6 @@
 "use client"
 
-import { fetchApplication } from "@/api/application";
+import { selectApplication } from "@/api/application";
 import ChatSection from "@/components/chat/chat-section";
 import MenuSection from "@/components/menu/menu-section";
 import ReportButton from "@/components/report/report-button";
@@ -15,7 +15,7 @@ export default function Home() {
   const [applicationContentArr, setApplicationContentArr] = useState<ApplicationContent[]>([])
   const [selectedApplications, setSelectedApplicationNames] = useState<string[]>([])
 
-  const selectApplication = async (applicationName: string) => {
+  const handleSelectApplication = async (applicationName: string) => {
     const loadingToast = toast({
       title: "Fetching application",
       description: "Please wait while we fetch the application...",
@@ -28,14 +28,13 @@ export default function Home() {
           name: applicationName
         }
       )
-      const selectApplicationResponse = await fetchApplication(parsedSelectApplicationRequest)
+      const selectApplicationResponse = await selectApplication(parsedSelectApplicationRequest)
 
       if (!selectedApplications.includes(applicationName)) {
         setSelectedApplicationNames([...selectedApplications, applicationName])
         setApplicationContentArr([...applicationContentArr, selectApplicationResponse.application])
       }
       loadingToast.dismiss();
-
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
@@ -59,12 +58,14 @@ export default function Home() {
       </div>
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         <MenuSection 
-          selectApplication={selectApplication}
+          handleSelectApplication={handleSelectApplication}
           removeApplication={removeApplication}
           selectedApplications={selectedApplications}
           applicationContentArr={applicationContentArr}
         />
-        <ChatSection/>
+        <ChatSection
+          selectedApplications={selectedApplications}
+        />
       </div>
       <Toaster />
     </div>

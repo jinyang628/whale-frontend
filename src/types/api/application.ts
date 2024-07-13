@@ -46,7 +46,7 @@ const Column = z.object({
 
 export type Column = z.infer<typeof Column>;
 
-const Table = z.object({
+export const tableSchema = z.object({
   name: z.string().refine(
     (name) => name.length > 0 && name === name.toLowerCase() && !name.includes(' '),
     { message: "Table name must be non-empty, lowercase, and without spaces" }
@@ -58,11 +58,11 @@ const Table = z.object({
   ),
 });
 
-export type Table = z.infer<typeof Table>;
+export type Table = z.infer<typeof tableSchema>;
 
 const ApplicationContent = z.object({
   name: z.string(),
-  tables: z.array(Table),
+  tables: z.array(tableSchema),
 }).strict();
 
 export type ApplicationContent = z.infer<typeof ApplicationContent>;
