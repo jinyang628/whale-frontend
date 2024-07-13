@@ -44,6 +44,8 @@ const Column = z.object({
   message: "Invalid primary key configuration",
 });
 
+export type Column = z.infer<typeof Column>;
+
 const Table = z.object({
   name: z.string().refine(
     (name) => name.length > 0 && name === name.toLowerCase() && !name.includes(' '),
@@ -80,4 +82,3 @@ export type SelectApplicationResponse = z.infer<typeof selectApplicationResponse
 // export type DataType = z.infer<typeof DataType>;
 // export type PrimaryKey = z.infer<typeof PrimaryKey>;
 // export type ForeignKey = z.infer<typeof ForeignKey>;
-// export type Column = z.infer<typeof Column>;

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ApplicationNameDropdown } from "./applcation-name-dropdown";
 import { TableNameDropdown } from "./table-name-dropdown";
 import { ApplicationContent, Table } from "@/types/api/application";
+import ApplicationTables from "./application-table";
 
 interface MenuSectionProps {
     selectApplication: (applicationName: string) => void
@@ -34,10 +35,10 @@ export default function MenuSection({ selectApplication, selectedApplications, a
 
     useEffect(() => {
         if (selectedApplications && selectedApplications.length > 0) {
-          setVisibleApplicationName(selectedApplications[selectedApplications.length - 1])
-          const tables: Table[] = applicationContentArr[applicationContentArr.length - 1].tables
-          setAllTables(tables)
-          setVisibleTable(tables[0].name)
+            setVisibleApplicationName(selectedApplications[selectedApplications.length - 1])
+            const tables: Table[] = applicationContentArr[applicationContentArr.length - 1].tables
+            setAllTables(tables)
+            setVisibleTable(tables[0].name)
         }
     }, [selectedApplications, applicationContentArr])
 
@@ -58,7 +59,7 @@ export default function MenuSection({ selectApplication, selectedApplications, a
                     Add Application
                 </Button>
             </div>
-            <div className="flex justify-around pt-[2%]">
+            <div className="flex justify-around pt-[3%] pb-[3%]">
                 <ApplicationNameDropdown 
                     selectedApplications={selectedApplications}
                     visibleApplication={visibleApplication}
@@ -70,6 +71,10 @@ export default function MenuSection({ selectApplication, selectedApplications, a
                     updateVisibleTable={updateVisibleTable}
                 />
             </div>
+            <ApplicationTables 
+                visibleTable={visibleTable}
+                allTables={allTables}
+            />
         </div>
     );
 }
