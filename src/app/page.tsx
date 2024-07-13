@@ -12,7 +12,8 @@ import { useState } from "react";
 import { ZodError } from "zod";
 
 export default function Home() {
-  const [applicationContent, setApplicationContent] = useState<ApplicationContent | null>(null)
+  const [applicationContentArr, setApplicationContentArr] = useState<ApplicationContent[]>([])
+  const [selectedApplications, setSelectedApplicationNames] = useState<string[]>([])
 
   const selectApplication = async (applicationName: string) => {
     const loadingToast = toast({
@@ -28,7 +29,11 @@ export default function Home() {
         }
       )
       const selectApplicationResponse = await fetchApplication(parsedSelectApplicationRequest)
-      setApplicationContent(selectApplicationResponse.application)
+
+      if (!selectedApplications.includes(applicationName)) {
+        setSelectedApplicationNames([...selectedApplications, applicationName])
+        setApplicationContentArr([...applicationContentArr, selectApplicationResponse.application])
+      }
       loadingToast.dismiss();
 
     } catch (error) {
@@ -49,7 +54,8 @@ export default function Home() {
       <div className="flex flex-col lg:flex-row gap-6 w-full">
         <MenuSection 
           selectApplication={selectApplication}
-          applicationContent={applicationContent}
+          selectedApplications={selectedApplications}
+          applicationContentArr={applicationContentArr}
         />
         <ChatSection/>
       </div>
