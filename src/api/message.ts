@@ -9,6 +9,7 @@ export async function sendMessage(input: SendMessageRequest): Promise<SendMessag
     try {
         const response = await axios.post(`${BASE_URL}/${SERVICE_ENDPOINT}`, input);
         const sendMessageResponse = sendMessageResponseSchema.parse(response.data)
+        console.log(sendMessageResponse);
         return sendMessageResponse;
     // TODO: More robust error handling + consider whether we want to rethrow it
     } catch (error) {

@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Message } from "@/types/api/message";
 import { ReverseActionWrapper } from "@/types/api/reverse";
@@ -13,6 +14,16 @@ type ChatContainerProps = {
 }
 
 export default function ChatContainer({ chatHistory, reverseStack, handleUpdateChatHistory, handleUpdateReverseStack }: ChatContainerProps) {
+    const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (scrollAreaRef.current) {
+            const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+            if (scrollContainer) {
+                scrollContainer.scrollTop = scrollContainer.scrollHeight;
+            }
+        }
+    }, [chatHistory]);
 
     const reverse = async (message: string) => {
         const chatHistoryCopy = deepCopy(chatHistory);
@@ -48,13 +59,14 @@ export default function ChatContainer({ chatHistory, reverseStack, handleUpdateC
     }
 
     return (
-        <ScrollArea className="h-[500px] w-full rounded-md border p-4">
+        <ScrollArea ref={scrollAreaRef} className="h-[500px] w-full rounded-md border p-4">
             {
                 chatHistory.map((message: Message, index: number) => (
                     <MessageBlock
                         key={index}
                         message={message.content}
                         role={message.role}
+                        rows={message.rows}
                         reverse={reverse}
                     />
                 ))
