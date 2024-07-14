@@ -25,7 +25,6 @@ export default function ApplicationTables({ visibleTable, allTables }: Applicati
             <TableHead className="font-bold" >Name</TableHead>
             {
                 table?.columns
-                    .filter((column: Column) => column.primary_key === 'none')
                     .map(
                         (column: Column) => (<TableHead key={column.name}>{column.name}</TableHead>)
                     )   
@@ -39,7 +38,6 @@ export default function ApplicationTables({ visibleTable, allTables }: Applicati
             <TableCell className="font-bold">Data Type</TableCell> 
             {
                 table?.columns
-                    .filter((column: Column) => column.primary_key === 'none')
                     .map((column: Column, index: number) => (
                         <TableCell key={index}>{column.data_type}</TableCell>
                     ))
@@ -49,7 +47,6 @@ export default function ApplicationTables({ visibleTable, allTables }: Applicati
             <TableCell className="font-bold" >Optional</TableCell> 
             {
                 table?.columns
-                    .filter((column: Column) => column.primary_key === 'none')
                     .map((column: Column, index: number) => (
                         <TableCell key={index}>{column.nullable ? "True" : "False"}</TableCell>
                     ))

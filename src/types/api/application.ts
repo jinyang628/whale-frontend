@@ -8,10 +8,10 @@ const DataType = z.enum([
   'date',
   'datetime',
   'uuid',
+  'enum'
 ]);
 
-const PrimaryKey = z.enum([
-  'none',
+const primaryKeySchema = z.enum([
   'auto_increment',
   'uuid',
 ]);
@@ -21,30 +21,31 @@ const ForeignKey = z.object({
   column: z.string(),
 });
 
-const Column = z.object({
+const columnSchema = z.object({
   name: z.string().refine(
     (name) => name.length > 0 && name === name.toLowerCase() && !name.includes(' '),
     { message: "Column name must be non-empty, lowercase, and without spaces" }
   ),
   data_type: DataType,
-  primary_key: PrimaryKey.default('none'),
+  enum_values: z.array(z.any()).nullable(),
   nullable: z.boolean().default(false),
   default_value: z.any().optional(),
   unique: z.boolean().optional(),
   foreign_key: z.union([ForeignKey, z.null()]).optional()
 }).refine((data) => {
-  if (data.primary_key === 'auto_increment') {
-    return data.data_type === 'integer' && !data.nullable && data.default_value === 0 && data.unique === true && data.foreign_key === null;
-  }
-  if (data.primary_key === 'uuid') {
-    return data.data_type === 'string' && !data.nullable && data.default_value === "" && data.unique === true && data.foreign_key === null;
+  if (data.data_type === 'enum') {
+    if (!data.enum_values) {
+      return false;
+    } 
+    const firstElementType = typeof data.enum_values[0];
+    const allSameType = data.enum_values.every(value => typeof value === firstElementType);
+
+    return data.enum_values && data.enum_values.length > 0 && new Set(data.enum_values).size === data.enum_values.length && data.default_value && data.enum_values.includes(data.default_value) && allSameType;
   }
   return true;
-}, {
-  message: "Invalid primary key configuration",
 });
 
-export type Column = z.infer<typeof Column>;
+export type Column = z.infer<typeof columnSchema>;
 
 export const tableSchema = z.object({
   name: z.string().refine(
@@ -52,20 +53,20 @@ export const tableSchema = z.object({
     { message: "Table name must be non-empty, lowercase, and without spaces" }
   ),
   description: z.string().optional(),
-  columns: z.array(Column).refine(
-    (columns) => columns.filter(col => col.primary_key !== 'none').length === 1,
-    { message: "Exactly one column must be set as primary key" }
-  ),
+  columns: z.array(columnSchema),
+  primary_key: primaryKeySchema,
+  enable_created_at_timestamp: z.boolean().optional(),
+  enable_updated_at_timestamp: z.boolean().optional(),
 });
 
 export type Table = z.infer<typeof tableSchema>;
 
-const ApplicationContent = z.object({
+const applicationContentSchema = z.object({
   name: z.string(),
   tables: z.array(tableSchema),
 }).strict();
 
-export type ApplicationContent = z.infer<typeof ApplicationContent>;
+export type ApplicationContent = z.infer<typeof applicationContentSchema>;
 
 export const selectApplicationRequestSchema = z.object({
   name: z.string().min(1, "Name is required")
@@ -74,11 +75,7 @@ export const selectApplicationRequestSchema = z.object({
 export type SelectApplicationRequest = z.infer<typeof selectApplicationRequestSchema>;
 
 export const selectApplicationResponseSchema = z.object({
-    application: ApplicationContent
+    application: applicationContentSchema
 }).strict()
 
 export type SelectApplicationResponse = z.infer<typeof selectApplicationResponseSchema>;
-
-// export type DataType = z.infer<typeof DataType>;
-// export type PrimaryKey = z.infer<typeof PrimaryKey>;
-// export type ForeignKey = z.infer<typeof ForeignKey>;
