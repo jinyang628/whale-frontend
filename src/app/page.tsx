@@ -7,7 +7,7 @@ import ReportButton from "@/components/report/report-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Toaster } from "@/components/ui/toaster"
 import { toast } from "@/components/ui/use-toast";
-import { applicationContentSchema, selectApplicationRequestSchema } from "@/types/api/application";
+import { ApplicationContent, selectApplicationRequestSchema } from "@/types/api/application";
 import { useState } from "react";
 import { ZodError } from "zod";
 
