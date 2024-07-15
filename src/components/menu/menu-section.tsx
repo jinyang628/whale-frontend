@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react";
 import { ApplicationNameDropdown } from "./application-name-dropdown";
 import { TableNameDropdown } from "./table-name-dropdown";
-import { applicationContentSchema, Table } from "@/types/api/application";
+import { ApplicationContent, Table } from "@/types/api/application";
 import ApplicationTables from "./application-table";
 
 interface MenuSectionProps {
