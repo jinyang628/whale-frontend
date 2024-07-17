@@ -59,7 +59,7 @@ export default function ChatContainer({ chatHistory, reverseStack, handleUpdateC
     }
 
     return (
-        <ScrollArea ref={scrollAreaRef} className="h-[500px] w-full rounded-md border p-4">
+        <ScrollArea ref={scrollAreaRef} className="rounded-md border p-4">
             {
                 chatHistory.map((message: Message, index: number) => (
                     <MessageBlock

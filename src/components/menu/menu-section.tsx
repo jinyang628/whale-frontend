@@ -78,10 +78,12 @@ export default function MenuSection({ handleSelectApplication, removeApplication
                     updateVisibleTable={updateVisibleTable}
                 />
             </div>
-            <ApplicationTables 
-                visibleTable={visibleTable}
-                allTables={allTables}
-            />
+            <div className="flex justify-center">
+                <ApplicationTables 
+                    visibleTable={visibleTable}
+                    allTables={allTables}
+                />
+            </div>
         </div>
     );
 }
