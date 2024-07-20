@@ -14,8 +14,8 @@ const reverseActionDeleteSchema = reverseActionSchema.extend({
   
 const reverseActionUpdateSchema = reverseActionSchema.extend({
     action_type: z.literal('update'),
-    reverse_filter_conditions: z.array(z.record(z.any())),
-    reverse_updated_data: z.array(z.record(z.any())),
+    reverse_filter_conditions: z.record(z.any()),
+    reverse_updated_data: z.record(z.any()),
     target_table: tableSchema,
     application_name: z.string(),
 });
