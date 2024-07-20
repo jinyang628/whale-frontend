@@ -7,6 +7,7 @@ import { toast } from "@/components/ui/use-toast";
 import { ZodError } from "zod";
 import { sendMessage } from "@/api/message";
 
+
 interface ChatSectionProps {
     selectedApplications: string[]
 }
