@@ -20,4 +20,4 @@ jobs:
           git remote add deployment https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/jinyang628/vercel-whale-platform.git
           git push deployment main:main --force
         env:
-          PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
