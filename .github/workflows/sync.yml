@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    repositories:
+      - huge-whale/whale-platform
     paths:
       - '**'
     types: [ pushed ]
