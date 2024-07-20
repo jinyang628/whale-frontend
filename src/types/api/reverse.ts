@@ -30,12 +30,17 @@ const reverseActionPostSchema = reverseActionSchema.extend({
 const reverseActionGetSchema = reverseActionSchema.extend({
     action_type: z.literal('get'),
 });
+
+const reverseActionClarificationSchema = reverseActionSchema.extend({
+    action_type: z.literal('clarification'),
+});
   
 const reverseActionUnionSchema = z.discriminatedUnion('action_type', [
     reverseActionDeleteSchema,
     reverseActionUpdateSchema,
     reverseActionPostSchema,
     reverseActionGetSchema,
+    reverseActionClarificationSchema,
 ]);
   
 export const reverseActionWrapperSchema = z.object({
