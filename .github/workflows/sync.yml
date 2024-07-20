@@ -20,7 +20,7 @@ jobs:
 
       - name: Pull from Working Repo
         run: |
-          git remote add working-repo https://github.com/huge-whale/whale-platform.git
+          git remote add whale-platform https://github.com/huge-whale/whale-platform.git
           git fetch vercel-whale-platform
           git merge vercel-whale-platform/main --allow-unrelated-histories
           git push origin main
