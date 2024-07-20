@@ -1,25 +1,26 @@
-name: Pull from Working Repo
+name: Sync Repositories
 
 on:
   push:
     branches:
       - main
-    repositories:
-      - huge-whale/whale-platform
-    paths:
-      - '**'
-    types: [ pushed ]
 
 jobs:
-  pull:
+  sync:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout Deployment Repo
         uses: actions/checkout@v2
         with:
           repository: jinyang628/vercel-whale-platform
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
 
       - name: Pull from Working Repo
         run: |
