@@ -14,10 +14,6 @@ interface ApplicationTablesProps {
 }
 
 export default function ApplicationTables({ visibleTable, allTables }: ApplicationTablesProps ) {
-    
-    if (visibleTable == "") {
-        return null
-    }
 
     const table: Table | null = allTables.filter(table => table.name === visibleTable)[0]
     const header = <TableHeader>
@@ -55,11 +51,17 @@ export default function ApplicationTables({ visibleTable, allTables }: Applicati
     </TableBody>
 
     return (
-        visibleTable !== "" ? 
-            <UITable>
-                {header}
-                {body}
-            </UITable>
-        : null
-    )
+        <div className="h-[15vh] flex items-center justify-center">
+            {visibleTable !== "" ? (
+                <div className="w-full h-full overflow-auto">
+                    <UITable>
+                        {header}
+                        {body}
+                    </UITable>
+                </div>
+            ) : (
+                <p className="text-lg text-gray-500">No table selected</p>
+            )}
+        </div>
+    );
 }

@@ -49,34 +49,36 @@ export default function MenuSection({ handleSelectApplication, removeApplication
     }, [selectedApplications, applicationContentArr])
 
     return (
-        <div className="flex flex-col w-full space-y-2">
-            <div className="flex space-x-2">
-                <Input 
-                    type="application_name" 
-                    placeholder="Enter application name here..." 
-                    className="flex-grow" 
-                    value={applicationName} 
-                    onChange={(e) => setApplicationName(e.target.value)} 
-                />
-                <Button 
-                    type="submit"
-                    onClick={handleSubmit}
-                >
-                    Add Application
-                </Button>
-            </div>
-            <div className="flex justify-around pt-[3%] pb-[3%]">
-                <ApplicationNameDropdown 
-                    selectedApplications={selectedApplications}
-                    visibleApplication={visibleApplication}
-                    updateVisibleApplication={updateVisibleApplication}
-                    removeApplication={removeApplication}
-                />
-                <TableNameDropdown 
-                    allTables={allTables}
-                    visibleTable={visibleTable}
-                    updateVisibleTable={updateVisibleTable}
-                />
+        <div className="flex flex-col w-full space-y-4 mb-[1%]">
+            <div className="flex justify-around">
+                <div className="w-1/2 flex space-x-2">
+                    <Input 
+                        type="application_name" 
+                        placeholder="Enter application name here..." 
+                        className="flex-grow mr-[1%]" 
+                        value={applicationName} 
+                        onChange={(e) => setApplicationName(e.target.value)} 
+                    />
+                    <Button 
+                        type="submit"
+                        onClick={handleSubmit}
+                    >
+                        Add Application
+                    </Button>
+                </div>
+                <div className="w-1/3 flex justify-around">
+                    <ApplicationNameDropdown 
+                        selectedApplications={selectedApplications}
+                        visibleApplication={visibleApplication}
+                        updateVisibleApplication={updateVisibleApplication}
+                        removeApplication={removeApplication}
+                    />
+                    <TableNameDropdown 
+                        allTables={allTables}
+                        visibleTable={visibleTable}
+                        updateVisibleTable={updateVisibleTable}
+                    />
+                </div>
             </div>
             <div className="flex justify-center">
                 <ApplicationTables 
