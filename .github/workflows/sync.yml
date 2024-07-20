@@ -1,4 +1,4 @@
-name: Sync Repositories
+name: Sync to Deployment Repo
 
 on:
   push:
@@ -10,23 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout Deployment Repo
+      - name: Checkout Source Repo
         uses: actions/checkout@v2
         with:
-          repository: jinyang628/vercel-whale-platform
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
 
-      - name: Configure Git
+      - name: Push to Deployment Repo
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-      - name: Pull from Working Repo
-        run: |
-          git remote add working-repo https://github.com/huge-whale/whale-platform.git
-          git fetch working-repo
-          git merge working-repo/main --allow-unrelated-histories
-          git push origin main
+          git remote add deployment https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/jinyang628/vercel-whale-platform.git
+          git push deployment main:main --force
         env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
