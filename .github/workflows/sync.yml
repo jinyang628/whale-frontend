@@ -4,15 +4,16 @@ on:
   push:
     branches:
       - main
-    repositories:
-      - huge-whale/whale-platform
+    paths:
+      - '**'
+    types: [ pushed ]
 
 jobs:
   pull:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Production Repo
+      - name: Checkout Deployment Repo
         uses: actions/checkout@v2
         with:
           repository: jinyang628/vercel-whale-platform
@@ -20,9 +21,9 @@ jobs:
 
       - name: Pull from Working Repo
         run: |
-          git remote add whale-platform https://github.com/huge-whale/whale-platform.git
-          git fetch vercel-whale-platform
-          git merge vercel-whale-platform/main --allow-unrelated-histories
+          git remote add working-repo https://github.com/huge-whale/whale-platform.git
+          git fetch working-repo
+          git merge working-repo/main --allow-unrelated-histories
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
