@@ -15,9 +15,34 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Debug Information
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Repository contents:"
+          ls -la
+          echo "Git status:"
+          git status
+          echo "Git remote:"
+          git remote -v
+
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          echo "Git config:"
+          git config --list
+
       - name: Push to Deployment Repo
         run: |
-          git remote add deployment https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/jinyang628/vercel-whale-platform.git
+          echo "Adding deployment remote..."
+          git remote add deployment https://${{ secrets.PAT_TOKEN }}@github.com/jinyang628/vercel-whale-platform.git
+          echo "Pushing to deployment repo..."
           git push deployment main:main --force
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+
+      - name: Error Information
+        if: failure()
+        run: |
+          echo "Error occurred. Displaying last few lines of the log:"
+          tail -n 50 $GITHUB_WORKSPACE/github-actions-results.txt
