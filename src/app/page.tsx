@@ -51,12 +51,12 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen w-full p-10">
+    <div className="flex flex-col h-screen w-full p-[2%]">
       <div className="flex justify-end items-center mb-4">
         <ThemeToggle />
         <ReportButton/>
       </div>
-      <div className="flex flex-col lg:flex-row gap-6 w-full">
+      <div>
         <MenuSection 
           handleSelectApplication={handleSelectApplication}
           removeApplication={removeApplication}

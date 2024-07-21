@@ -52,7 +52,7 @@ export default function ChatSection({ selectedApplications }: ChatSectionProps) 
     }
 
     return (
-        <div className="flex flex-col w-full space-y-2">  
+        <div className="flex flex-col w-full h-[450px] pt-[1%] space-y-2">  
             <ChatContainer
                 chatHistory={chatHistory}
                 reverseStack={reverseStack}
