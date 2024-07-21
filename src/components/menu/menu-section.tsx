@@ -20,8 +20,17 @@ export default function MenuSection({ handleSelectApplication, removeApplication
     const [allTables, setAllTables] = useState<Table[]>([])
 
     const handleSubmit = async () => {
+        if (applicationName.trim()) {
         handleSelectApplication(applicationName)
         setApplicationName("")
+        }
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            handleSubmit()
+        }
     }
 
     const updateVisibleApplication = (applicationName: string) => {
@@ -57,7 +66,8 @@ export default function MenuSection({ handleSelectApplication, removeApplication
                         placeholder="Enter application name here..." 
                         className="flex-grow mr-[1%]" 
                         value={applicationName} 
-                        onChange={(e) => setApplicationName(e.target.value)} 
+                        onChange={(e) => setApplicationName(e.target.value)}
+                        onKeyDown={handleKeyDown}
                     />
                     <Button 
                         type="submit"

@@ -10,8 +10,17 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
     const [message, setMessage] = useState<string>("")
 
     const handleSubmit = async () => {
-        handleSendMessage(message)
-        setMessage("")
+        if (message.trim()) {
+            handleSendMessage(message)
+            setMessage("")
+        }
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSubmit()
+        }
     }
 
     return (
@@ -20,7 +29,8 @@ export default function MessageInput({ handleSendMessage }: MessageInputProps) {
                 placeholder="Enter instruction here..." 
                 className="w-full h-[15%]" 
                 value={message} 
-                onChange={(e) => setMessage(e.target.value)} 
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
             />
             <div className="flex pt-[1%] justify-end">
                 <Button 
