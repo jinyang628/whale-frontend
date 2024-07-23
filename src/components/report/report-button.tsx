@@ -15,7 +15,7 @@ export default function ReportButton() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger 
-                className="ml-[1%] p-2 rounded-[50%] border border-input bg-background hover:bg-accent hover:text-accent-foreground shadow-sm"
+                className="ml-[1%] mr-[1%] p-2 rounded-[50%] border border-input bg-background hover:bg-accent hover:text-accent-foreground shadow-sm"
                 aria-label="Report an issue"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

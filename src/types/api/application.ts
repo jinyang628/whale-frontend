@@ -69,7 +69,9 @@ const applicationContentSchema = z.object({
 export type ApplicationContent = z.infer<typeof applicationContentSchema>;
 
 export const selectApplicationRequestSchema = z.object({
-  name: z.string().min(1, "Name is required")
+  user_id: z.string(),
+  new_application_name: z.string().min(1, "Name is required"),
+  all_application_names: z.array(z.string().min(1, "Name is required"))
 });
 
 export type SelectApplicationRequest = z.infer<typeof selectApplicationRequestSchema>;

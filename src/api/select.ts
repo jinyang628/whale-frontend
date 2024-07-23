@@ -7,9 +7,7 @@ const SERVICE_ENDPOINT = "application/select"
 
 export async function selectApplication(input: SelectApplicationRequest): Promise<SelectApplicationResponse> {
     try {
-        const response = await axios.get(`${BASE_URL}/${SERVICE_ENDPOINT}`, {
-            params: input 
-        });
+        const response = await axios.post(`${BASE_URL}/${SERVICE_ENDPOINT}`, input);
         console.log(response);
         const selectApplicationResponse = selectApplicationResponseSchema.parse(response.data)
         return selectApplicationResponse;
