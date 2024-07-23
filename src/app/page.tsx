@@ -15,7 +15,6 @@ import { updateCache } from "@/api/user/update-cache";
 import { getCache } from "@/api/user/get-cache";
 import Image from "next/image";
 import LoginButton from "@/components/authentication/login-button";
-import { SignInButton, SignedOut } from "@clerk/nextjs";
 
 export default function Home() {
   const [applicationContentArr, setApplicationContentArr] = useState<ApplicationContent[]>([])
