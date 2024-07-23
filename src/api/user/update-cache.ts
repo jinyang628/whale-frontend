@@ -1,3 +1,5 @@
+"use server"
+
 import { UpdateCacheRequest } from "@/types/api/user/update-cache";
 
 import axios from "axios";

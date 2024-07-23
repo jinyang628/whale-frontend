@@ -146,7 +146,7 @@ export default function Home() {
           />
         </div>
         {isBlurred && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90">
+          <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-90">
             <div className="text-center">
               <div className="relative w-64 h-64 mx-auto mb-4">
                 <Image

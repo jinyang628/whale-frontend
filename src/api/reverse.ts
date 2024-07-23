@@ -1,3 +1,5 @@
+"use server"
+
 import { ReverseActionWrapper } from "@/types/api/reverse";
 
 import axios from "axios";

@@ -1,3 +1,5 @@
+"use server"
+
 import { SendMessageRequest, SendMessageResponse, sendMessageResponseSchema } from "@/types/api/message";
 
 import axios from "axios";

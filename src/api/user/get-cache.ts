@@ -1,3 +1,5 @@
+"use server"
+
 import { GetCacheRequest, getCacheResponseSchema, GetCacheResponse  } from "@/types/api/user/get-cache";
 
 import axios from "axios";

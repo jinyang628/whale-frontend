@@ -1,3 +1,5 @@
+"use server"
+
 import { SelectApplicationRequest, SelectApplicationResponse, selectApplicationResponseSchema } from "@/types/api/application";
 
 import axios from "axios";
