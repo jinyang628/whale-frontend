@@ -160,9 +160,7 @@ export default function Home() {
             </div>
           </div>
         )}
-      </SignedIn>
-      
-      <LoginButton />
+      </SignedIn>      
       <Toaster />
     </div>
   );
