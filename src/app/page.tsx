@@ -14,7 +14,6 @@ import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/user/update-cache";
 import { getCache } from "@/api/user/get-cache";
 import Image from "next/image";
-import LoginButton from "@/components/authentication/login-button";
 
 export default function Home() {
   const [applicationContentArr, setApplicationContentArr] = useState<ApplicationContent[]>([])
