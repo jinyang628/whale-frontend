@@ -23,9 +23,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <Head>
-          <Script async src="https://cloud.umami.is/script.js" data-website-id="293934de-1d90-48b8-8d99-d72a76aa488a" />
-        </Head>
+        <Script async src="https://cloud.umami.is/script.js" data-website-id="293934de-1d90-48b8-8d99-d72a76aa488a" />
         <body className={inter.className}>
           <ThemeProvider 
               attribute="class"
