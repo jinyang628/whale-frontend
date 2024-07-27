@@ -14,7 +14,6 @@ import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/user/update-cache";
 import { getCache } from "@/api/user/get-cache";
 import Image from "next/image";
-import { Analytics } from '@vercel/analytics/react';
 
 export default function Home() {
   const [applicationContentArr, setApplicationContentArr] = useState<ApplicationContent[]>([])
@@ -163,7 +162,6 @@ export default function Home() {
         )}
       </SignedIn>      
       <Toaster />
-      <Analytics />
     </div>
   );
 }

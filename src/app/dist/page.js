@@ -58,7 +58,6 @@ var update_cache_1 = require("@/types/api/user/update-cache");
 var update_cache_2 = require("@/api/user/update-cache");
 var get_cache_1 = require("@/api/user/get-cache");
 var image_1 = require("next/image");
-var react_2 = require("@vercel/analytics/react");
 function Home() {
     var _this = this;
     var _a = react_1.useState([]), applicationContentArr = _a[0], setApplicationContentArr = _a[1];
@@ -214,7 +213,6 @@ function Home() {
                     React.createElement("div", { className: "relative w-64 h-64 mx-auto mb-4" },
                         React.createElement(image_1["default"], { src: "/assistant.jpg", alt: "Loading", layout: "fill", objectFit: "contain" })),
                     React.createElement("p", { className: "text-lg font-semibold" }, "Preparing the ocean for your whale..."))))),
-        React.createElement(toaster_1.Toaster, null),
-        React.createElement(react_2.Analytics, null)));
+        React.createElement(toaster_1.Toaster, null)));
 }
 exports["default"] = Home;
