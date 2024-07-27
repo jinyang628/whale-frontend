@@ -2,15 +2,19 @@ import React from 'react';
 import { SignedIn, UserButton} from '@clerk/clerk-react';
 import { ThemeToggle } from '../theme/theme-toggle';
 import ReportButton from '../report/report-button';
+import Navigation from './navigation';
 
 const HeaderButtons = () => {
   return (
-    <div className="flex justify-end items-center mb-4 space-x-2">
-      <ThemeToggle />
-      <ReportButton />
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+    <div className="mb-4 flex justify-between items-center">
+      <Navigation />
+      <div className="flex items-center space-x-2">
+        <ThemeToggle />
+        <ReportButton />
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
     </div>
   );
 };

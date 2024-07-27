@@ -17,7 +17,8 @@ export const sendMessageRequestSchema = z.object({
     message: z.string(),
     chat_history: z.array(messageSchema),
     reverse_stack: z.array(reverseActionWrapperSchema),
-    application_names: z.array(z.string())
+    application_names: z.array(z.string()),
+    user_id: z.string(),
 });
 
 export type SendMessageRequest = z.infer<typeof sendMessageRequestSchema>;

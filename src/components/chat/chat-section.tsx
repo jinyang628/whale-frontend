@@ -9,9 +9,10 @@ import { sendMessage } from "@/api/message";
 
 interface ChatSectionProps {
     selectedApplications: string[]
+    userId: string
 }
 
-export default function ChatSection({ selectedApplications }: ChatSectionProps) {
+export default function ChatSection({ selectedApplications, userId }: ChatSectionProps) {
     const [chatHistory, setChatHistory] = useState<Message[]>([]);
     const [reverseStack, setReverseStack] = useState<ReverseActionWrapper[]>([]);
 
@@ -27,7 +28,8 @@ export default function ChatSection({ selectedApplications }: ChatSectionProps) 
                     message: message,
                     chat_history: chatHistory,
                     reverse_stack: reverseStack,
-                    application_names: selectedApplications
+                    application_names: selectedApplications,
+                    user_id: userId,
                 }
             )
             const sendMessageResponse = await sendMessage(parsedSendMessageRequest)
