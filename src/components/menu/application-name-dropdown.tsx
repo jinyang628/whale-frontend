@@ -60,7 +60,7 @@ export function ApplicationNameDropdown({
           </Button>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={visibleApplication}

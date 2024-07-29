@@ -42,7 +42,7 @@ export function TableNameDropdown({
           </Button>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent>
         <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={visibleTable}
