@@ -5,19 +5,24 @@ import { ReverseActionWrapper } from "@/types/api/message/reverse";
 import HomeMessageBlock from "./message-block";
 import { deepCopy } from "@/lib/utils";
 import { reverseInference } from "@/api/home/message/reverse";
+import { Button } from "@/components/ui/button";
 
 type UsageChatContainerProps = {
   chatHistory: UseMessage[];
   reverseStack: ReverseActionWrapper[];
+  profileImageUrl: string;
   handleUpdateChatHistory: (chatHistory: UseMessage[]) => void;
   handleUpdateReverseStack: (reverseStack: ReverseActionWrapper[]) => void;
+  onReset: () => void;
 };
 
 export default function HomeChatContainer({
   chatHistory,
   reverseStack,
+  profileImageUrl,
   handleUpdateChatHistory,
   handleUpdateReverseStack,
+  onReset,
 }: UsageChatContainerProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -68,16 +73,25 @@ export default function HomeChatContainer({
   };
 
   return (
-    <ScrollArea ref={scrollAreaRef} className="rounded-md border p-4 h-full">
-      {chatHistory.map((message: UseMessage, index: number) => (
-        <HomeMessageBlock
-          key={index}
-          message={message.content}
-          role={message.role}
-          rows={message.rows}
-          reverse={reverse}
-        />
-      ))}
-    </ScrollArea>
+    <div className="relative h-full">
+      <Button
+        onClick={onReset}
+        className="absolute top-2 right-2 z-10 text-xs"
+      >
+        RESET
+      </Button>
+      <ScrollArea ref={scrollAreaRef} className="rounded-md border p-4 h-full">
+        {chatHistory.map((message: UseMessage, index: number) => (
+          <HomeMessageBlock
+            key={index}
+            profileImageUrl={profileImageUrl}
+            message={message.content}
+            role={message.role}
+            rows={message.rows}
+            reverse={reverse}
+          />
+        ))}
+      </ScrollArea>
+    </div>
   );
 }

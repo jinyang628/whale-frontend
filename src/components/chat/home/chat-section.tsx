@@ -11,11 +11,13 @@ import { useMessage as sendMessage } from "@/api/home/message/use";
 interface ChatSectionProps {
   selectedApplications: string[];
   userId: string;
+  profileImageUrl: string;
 }
 
 export default function HomeChatSection({
   selectedApplications,
   userId,
+  profileImageUrl,
 }: ChatSectionProps) {
   const [chatHistory, setChatHistory] = useState<UseMessage[]>([]);
   const [reverseStack, setReverseStack] = useState<ReverseActionWrapper[]>([]);
@@ -60,8 +62,13 @@ export default function HomeChatSection({
       <HomeChatContainer
         chatHistory={chatHistory}
         reverseStack={reverseStack}
+        profileImageUrl={profileImageUrl}
         handleUpdateChatHistory={handleUpdateChatHistory}
         handleUpdateReverseStack={handleUpdateReverseStack}
+        onReset={() => {
+          setChatHistory([]);
+          setReverseStack([]);
+        }}
       />
       <MessageInput
         placeholder="Enter instruction here..."

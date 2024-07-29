@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 
 type MessageBlockProps = {
+  profileImageUrl: string;
   message: string;
   role: string;
   rows: Record<string, any>[] | null | undefined;
@@ -18,6 +19,7 @@ type MessageBlockProps = {
 };
 
 export default function HomeMessageBlock({
+  profileImageUrl,
   message,
   role,
   rows,
@@ -62,8 +64,11 @@ export default function HomeMessageBlock({
         </div>
         {!isAssistantMessage && (
           <Avatar>
-            <AvatarImage src="/user.jpg" alt="User" />
-            <AvatarFallback>Me</AvatarFallback>
+            {profileImageUrl ? (
+              <AvatarImage src={profileImageUrl} alt="User" />
+            ) : (
+              <AvatarImage src="/user.jpg" alt="User" />
+            )}
           </Avatar>
         )}
       </div>

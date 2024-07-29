@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageInput from "../message-input";
 import { CreateMessage, createRequestSchema } from "@/types/api/message/create";
 import { toast } from "@/components/ui/use-toast";
@@ -7,10 +7,29 @@ import { createMessage } from "@/api/creation/message/create";
 import CreationChatContainer from "./chat-container";
 import { ApplicationContent } from "@/types/api/application/base";
 import { build } from "@/api/creation/application/build";
-import { send } from "process";
+import { useUser } from "@clerk/clerk-react";
 
 export default function CreationChatSection() {
   const [chatHistory, setChatHistory] = useState<CreateMessage[]>([]);
+  const { user, isLoaded } = useUser();
+  const [profileImageUrl, setProfileImageUrl] = useState<string>("");
+  const isInitializedRef = useRef(false);
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      if (isLoaded && user && !isInitializedRef.current) {
+        const googleAccount = user?.externalAccounts.find(
+          account => account.provider === "google"
+        );
+        const imageUrl = googleAccount?.imageUrl || user.imageUrl;
+        setProfileImageUrl(imageUrl);
+        isInitializedRef.current = true;
+      }
+    };
+
+    initializeUser();
+  }, [isLoaded, user]);
+
 
   const handleSendMessage = async (message: string) => {
     const loadingToast = toast({
@@ -62,7 +81,9 @@ export default function CreationChatSection() {
     <div className="flex flex-col w-full h-[800px] pt-[1%] space-y-2">
       <CreationChatContainer
         chatHistory={chatHistory}
+        profileImageUrl={profileImageUrl}
         buildApplication={buildApplication}
+        onReset={() => setChatHistory([])}
       />
       <MessageInput
         placeholder="Describe the application here..."

@@ -28,6 +28,7 @@ export default function Home() {
   >([]);
   const [userId, setUserId] = useState<string>("");
   const [isBlurred, setIsBlurred] = useState<boolean>(true);
+  const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const { user, isLoaded } = useUser();
   const isInitializedRef = useRef(false);
 
@@ -84,6 +85,12 @@ export default function Home() {
   useEffect(() => {
     const initializeUser = async () => {
       if (isLoaded && user && !isInitializedRef.current) {
+        const googleAccount = user?.externalAccounts.find(
+          account => account.provider === "google"
+        );
+        const imageUrl = googleAccount?.imageUrl || user.imageUrl;
+        setProfileImageUrl(imageUrl);
+
         if (user?.primaryEmailAddress?.emailAddress) {
           const email: string = user.primaryEmailAddress.emailAddress;
           const userId: string = user.id;
@@ -168,6 +175,7 @@ export default function Home() {
           <ChatSection
             selectedApplications={selectedApplications}
             userId={userId}
+            profileImageUrl={profileImageUrl}
           />
         </div>
         {isBlurred && (

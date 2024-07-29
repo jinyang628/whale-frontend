@@ -5,6 +5,7 @@ import { ApplicationContent } from "@/types/api/application/base";
 import ApplicationContentDisplay from "./application-content-display";
 
 type MessageBlockProps = {
+  profileImageUrl: string;
   message: string;
   role: string;
   applicationContent: ApplicationContent | null;
@@ -12,6 +13,7 @@ type MessageBlockProps = {
 };
 
 export default function CreateMessageBlock({
+  profileImageUrl,
   message,
   role,
   applicationContent,
@@ -57,8 +59,11 @@ export default function CreateMessageBlock({
         </div>
         {!isAssistantMessage && (
           <Avatar>
-            <AvatarImage src="/user.jpg" alt="User" />
-            <AvatarFallback>Me</AvatarFallback>
+            {profileImageUrl ? (
+              <AvatarImage src={profileImageUrl} alt="User" />
+            ) : (
+              <AvatarImage src="/user.jpg" alt="User" />
+            )}
           </Avatar>
         )}
       </div>
