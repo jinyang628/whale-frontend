@@ -49,13 +49,19 @@ export default function CreationChatSection() {
         ].application_content = null;
       }
       setChatHistory(sendMessageResponse.chat_history);
-      loadingToast.dismiss();
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
       } else {
         console.error(error);
       }
+      toast({
+        title: "Internal Error",
+        description: "Failed to generate response. Please rephrase your instruction and try again.",
+        duration: 5000,
+      });
+    } finally {
+      loadingToast.dismiss();
     }
   };
 
@@ -67,13 +73,14 @@ export default function CreationChatSection() {
     });
     try {
       await build(applicationContent);
-      loadingToast.dismiss();
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
       } else {
         console.error(error);
       }
+    } finally {
+      loadingToast.dismiss();
     }
   };
 

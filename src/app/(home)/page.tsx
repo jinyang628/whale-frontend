@@ -135,13 +135,14 @@ export default function Home() {
           ],
         });
       }
-      loadingToast.dismiss();
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
       } else {
         console.error(error);
       }
+    } finally {
+      loadingToast.dismiss();
     }
   };
 

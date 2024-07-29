@@ -39,13 +39,19 @@ export default function HomeChatSection({
       const sendMessageResponse = await sendMessage(parsedSendMessageRequest);
       setChatHistory(sendMessageResponse.chat_history);
       setReverseStack(sendMessageResponse.reverse_stack);
-      loadingToast.dismiss();
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
       } else {
         console.error(error);
       }
+      toast({
+        title: "Internal Error",
+        description: "Failed to generate response. Please rephrase your instruction and try again.",
+        duration: 5000,
+      });
+    } finally {
+      loadingToast.dismiss();
     }
   };
 
