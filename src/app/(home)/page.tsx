@@ -11,7 +11,7 @@ import {
   selectApplicationRequestSchema,
 } from "@/types/api/application/select";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { set, ZodError } from "zod";
+import { ZodError } from "zod";
 import { useUser, SignedIn } from "@clerk/clerk-react";
 import HeaderButtons from "@/components/shared/header/header-buttons";
 import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
