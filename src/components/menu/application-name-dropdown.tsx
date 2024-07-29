@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,19 +6,24 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
-import { AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineClose } from "react-icons/ai";
 
 interface ApplicationNameDropdownProps {
-    selectedApplications: string[]
-    visibleApplication: string
-    updateVisibleApplication: (applicationName: string) => void
-    removeApplication: (applicationName: string) => void
+  selectedApplications: string[];
+  visibleApplication: string;
+  updateVisibleApplication: (applicationName: string) => void;
+  removeApplication: (applicationName: string) => void;
 }
 
-export function ApplicationNameDropdown({ selectedApplications, visibleApplication, updateVisibleApplication, removeApplication }: ApplicationNameDropdownProps) {
+export function ApplicationNameDropdown({
+  selectedApplications,
+  visibleApplication,
+  updateVisibleApplication,
+  removeApplication,
+}: ApplicationNameDropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,9 +49,11 @@ export function ApplicationNameDropdown({ selectedApplications, visibleApplicati
     <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <div className="flex flex-col">
-          <Label className="flex pb-[5%] justify-center">View Selected Applications</Label>
-          <Button 
-            variant="outline" 
+          <Label className="flex pb-[5%] justify-center">
+            View Selected Applications
+          </Label>
+          <Button
+            variant="outline"
             disabled={selectedApplications.length === 0}
           >
             {visibleApplication || "No Application Selected"}
@@ -55,16 +62,19 @@ export function ApplicationNameDropdown({ selectedApplications, visibleApplicati
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={visibleApplication} onValueChange={updateVisibleApplication}>
+        <DropdownMenuRadioGroup
+          value={visibleApplication}
+          onValueChange={updateVisibleApplication}
+        >
           {selectedApplications.map((appName) => (
-            <DropdownMenuRadioItem 
-              key={appName} 
-              value={appName} 
+            <DropdownMenuRadioItem
+              key={appName}
+              value={appName}
               className="flex items-center justify-between group"
             >
               <span className="flex-grow">{appName}</span>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="sm"
                 onClick={(e) => {
                   e.preventDefault();
