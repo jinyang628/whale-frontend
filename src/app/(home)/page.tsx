@@ -11,7 +11,7 @@ import {
   selectApplicationRequestSchema,
 } from "@/types/api/application/select";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ZodError } from "zod";
+import { set, ZodError } from "zod";
 import { useUser, SignedIn } from "@clerk/clerk-react";
 import HeaderButtons from "@/components/shared/header/header-buttons";
 import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
@@ -19,13 +19,17 @@ import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
 import Image from "next/image";
 
+interface Applications {
+  applicationContentArr: ApplicationContent[];
+  applicationNames: string[];
+}
+
 export default function Home() {
-  const [applicationContentArr, setApplicationContentArr] = useState<
-    ApplicationContent[]
-  >([]);
-  const [selectedApplications, setSelectedApplicationNames] = useState<
-    string[]
-  >([]);
+  const [applications, setApplications] = useState<Applications>({
+    applicationContentArr: [],
+    applicationNames: [],
+  });
+
   const [userId, setUserId] = useState<string>("");
   const [isBlurred, setIsBlurred] = useState<boolean>(true);
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
@@ -56,21 +60,19 @@ export default function Home() {
           const applicationContent: ApplicationContent =
             selectApplicationResponse.application;
 
-          if (!selectedApplications.includes(applicationName)) {
+          if (!applications.applicationNames.includes(applicationName)) {
             newApplicationNames.push(applicationName);
             newApplicationContents.push(applicationContent);
           }
         }
 
-        // Batch update state
-        setSelectedApplicationNames((prev) => [
-          ...prev,
-          ...newApplicationNames,
-        ]);
-        setApplicationContentArr((prev) => [
-          ...prev,
-          ...newApplicationContents,
-        ]);
+        setApplications((prev) => ({
+          applicationNames: [...prev.applicationNames, ...newApplicationNames],
+          applicationContentArr: [
+            ...prev.applicationContentArr,
+            ...newApplicationContents,
+          ],
+        }));
 
         // Mark as initialized
         isInitializedRef.current = true;
@@ -79,7 +81,7 @@ export default function Home() {
         console.error(error);
       }
     },
-    [selectedApplications],
+    [applications],
   );
 
   useEffect(() => {
@@ -115,18 +117,23 @@ export default function Home() {
         selectApplicationRequestSchema.parse({
           user_id: userId,
           new_application_name: applicationName,
-          all_application_names: selectedApplications,
+          all_application_names: applications.applicationNames,
         });
       const selectApplicationResponse = await selectApplication(
         parsedSelectApplicationRequest,
       );
 
-      if (!selectedApplications.includes(applicationName)) {
-        setSelectedApplicationNames([...selectedApplications, applicationName]);
-        setApplicationContentArr([
-          ...applicationContentArr,
-          selectApplicationResponse.application,
-        ]);
+      if (!applications.applicationNames.includes(applicationName)) {
+        setApplications({
+          applicationNames: [
+            ...applications.applicationNames,
+            applicationName,
+          ],
+          applicationContentArr: [
+            ...applications.applicationContentArr,
+            selectApplicationResponse.application,
+          ],
+        });
       }
       loadingToast.dismiss();
     } catch (error) {
@@ -140,13 +147,15 @@ export default function Home() {
 
   const removeApplication = async (applicationName: string) => {
     try {
-      const updatedApplications: string[] = selectedApplications.filter(
+      const updatedApplications: string[] = applications.applicationNames.filter(
         (app) => app !== applicationName,
       );
-      setSelectedApplicationNames(updatedApplications);
-      setApplicationContentArr(
-        applicationContentArr.filter((app) => app.name !== applicationName),
-      );
+      setApplications({
+        applicationNames: updatedApplications,
+        applicationContentArr: applications.applicationContentArr.filter(
+          (app) => app.name !== applicationName,
+        ),
+      });
       const parsedUpdateCacheRequest = updateCacheRequestSchema.parse({
         user_id: userId,
         all_application_names: updatedApplications,
@@ -169,17 +178,17 @@ export default function Home() {
           <MenuSection
             handleSelectApplication={handleSelectApplication}
             removeApplication={removeApplication}
-            selectedApplications={selectedApplications}
-            applicationContentArr={applicationContentArr}
+            applicationNames={applications.applicationNames}
+            applicationContentArr={applications.applicationContentArr}
           />
           <ChatSection
-            selectedApplications={selectedApplications}
+            applicationNames={applications.applicationNames}
             userId={userId}
             profileImageUrl={profileImageUrl}
           />
         </div>
         {isBlurred && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-90">
+          <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-90 z-50">
             <div className="text-center">
               <div className="relative w-64 h-64 mx-auto mb-4">
                 <Image

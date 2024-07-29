@@ -12,14 +12,14 @@ import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 
 interface ApplicationNameDropdownProps {
-  selectedApplications: string[];
+  applicationNames: string[];
   visibleApplication: string;
   updateVisibleApplication: (applicationName: string) => void;
   removeApplication: (applicationName: string) => void;
 }
 
 export function ApplicationNameDropdown({
-  selectedApplications,
+  applicationNames,
   visibleApplication,
   updateVisibleApplication,
   removeApplication,
@@ -27,20 +27,20 @@ export function ApplicationNameDropdown({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedApplications.length === 0) {
+    if (applicationNames.length === 0) {
       setIsOpen(false);
     }
-  }, [selectedApplications]);
+  }, [applicationNames]);
 
   const handleRemoveApplication = (appName: string) => {
     removeApplication(appName);
-    if (selectedApplications.length === 1) {
+    if (applicationNames.length === 1) {
       setIsOpen(false);
     }
   };
 
   const handleOpenChange = (open: boolean) => {
-    if (selectedApplications.length > 0) {
+    if (applicationNames.length > 0) {
       setIsOpen(open);
     }
   };
@@ -54,7 +54,7 @@ export function ApplicationNameDropdown({
           </Label>
           <Button
             variant="outline"
-            disabled={selectedApplications.length === 0}
+            disabled={applicationNames.length === 0}
           >
             {visibleApplication || "No Application Selected"}
           </Button>
@@ -66,7 +66,7 @@ export function ApplicationNameDropdown({
           value={visibleApplication}
           onValueChange={updateVisibleApplication}
         >
-          {selectedApplications.map((appName) => (
+          {applicationNames.map((appName) => (
             <DropdownMenuRadioItem
               key={appName}
               value={appName}

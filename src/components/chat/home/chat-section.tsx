@@ -9,13 +9,13 @@ import { UseMessage } from "@/types/api/message/use";
 import { useMessage as sendMessage } from "@/api/home/message/use";
 
 interface ChatSectionProps {
-  selectedApplications: string[];
+  applicationNames: string[];
   userId: string;
   profileImageUrl: string;
 }
 
 export default function HomeChatSection({
-  selectedApplications,
+  applicationNames,
   userId,
   profileImageUrl,
 }: ChatSectionProps) {
@@ -33,7 +33,7 @@ export default function HomeChatSection({
         message: message,
         chat_history: chatHistory,
         reverse_stack: reverseStack,
-        application_names: selectedApplications,
+        application_names: applicationNames,
         user_id: userId,
       });
       const sendMessageResponse = await sendMessage(parsedSendMessageRequest);

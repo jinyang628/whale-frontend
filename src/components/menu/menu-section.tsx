@@ -9,14 +9,14 @@ import ApplicationTables from "./application-table";
 interface MenuSectionProps {
   handleSelectApplication: (applicationName: string) => void;
   removeApplication: (applicationName: string) => void;
-  selectedApplications: string[];
+  applicationNames: string[];
   applicationContentArr: ApplicationContent[];
 }
 
 export default function MenuSection({
   handleSelectApplication,
   removeApplication,
-  selectedApplications,
+  applicationNames,
   applicationContentArr,
 }: MenuSectionProps) {
   const [applicationName, setApplicationName] = useState<string>("");
@@ -52,9 +52,9 @@ export default function MenuSection({
   };
 
   useEffect(() => {
-    if (selectedApplications && selectedApplications.length > 0) {
+    if (applicationNames && applicationNames.length > 0) {
       setVisibleApplicationName(
-        selectedApplications[selectedApplications.length - 1],
+        applicationNames[applicationNames.length - 1],
       );
       const tables: Table[] =
         applicationContentArr[applicationContentArr.length - 1].tables;
@@ -65,7 +65,7 @@ export default function MenuSection({
       setAllTables([]);
       setVisibleTable("");
     }
-  }, [selectedApplications, applicationContentArr]);
+  }, [applicationContentArr, applicationNames]);
 
   return (
     <div className="flex flex-col w-full space-y-4 mb-[1%]">
@@ -85,7 +85,7 @@ export default function MenuSection({
         </div>
         <div className="w-1/3 flex justify-around">
           <ApplicationNameDropdown
-            selectedApplications={selectedApplications}
+            applicationNames={applicationNames}
             visibleApplication={visibleApplication}
             updateVisibleApplication={updateVisibleApplication}
             removeApplication={removeApplication}
