@@ -8,8 +8,15 @@ import CreationChatContainer from "./chat-container";
 import { ApplicationContent } from "@/types/api/application/base";
 import { build } from "@/api/creation/application/build";
 import { useUser } from "@clerk/clerk-react";
+import { Button } from "@/components/ui/button";
+import { Pen } from "lucide-react";
 
-export default function CreationChatSection() {
+type CreationChatSectionProps = {
+  applicationName: string;
+  handleStartBuilding: (ready: boolean) => void;
+};
+
+export default function BuildingChatSection({ applicationName, handleStartBuilding }: CreationChatSectionProps) {
   const [chatHistory, setChatHistory] = useState<CreateMessage[]>([]);
   const { user, isLoaded } = useUser();
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
@@ -86,6 +93,16 @@ export default function CreationChatSection() {
 
   return (
     <div className="flex flex-col w-full h-[800px] pt-[1%] space-y-2">
+      <div className="flex flex-row space-x-4 items-center">
+        <div className="ml-[2%] text-3xl">{applicationName}</div>  
+        <Button 
+          variant="outline" 
+          size="icon"
+          onClick={() => handleStartBuilding(false)}
+        >
+          <Pen className="h-4 w-4" />
+        </Button>
+      </div>
       <CreationChatContainer
         chatHistory={chatHistory}
         profileImageUrl={profileImageUrl}
