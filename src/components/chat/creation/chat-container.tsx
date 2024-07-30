@@ -9,14 +9,14 @@ type CreationChatContainerProps = {
   chatHistory: CreateMessage[];
   profileImageUrl: string;
   buildApplication: (applicationContent: ApplicationContent) => void;
-  onReset: () => void;
+  handleReset: () => void;
 };
 
 export default function CreationChatContainer({
   chatHistory,
   profileImageUrl,
   buildApplication,
-  onReset,
+  handleReset,
 }: CreationChatContainerProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ export default function CreationChatContainer({
   return (
     <div className="relative h-full">
       <Button
-        onClick={onReset}
+        onClick={handleReset}
         className="absolute top-2 right-2 z-10 text-xs h-6"
       >
         CLEAR

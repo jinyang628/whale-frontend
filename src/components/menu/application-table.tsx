@@ -7,6 +7,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Table, Column } from "@/types/api/application/base";
+import { HelpCircle } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Fragment } from "react";
 
 interface ApplicationTablesProps {
   visibleTable: string;
@@ -17,9 +25,27 @@ export default function ApplicationTables({
   visibleTable,
   allTables,
 }: ApplicationTablesProps) {
+
   const table: Table | null = allTables.filter(
     (table) => table.name === visibleTable,
   )[0];
+
+  const formatEnumValues = (values: string[]) => {
+    if (values.length === 1) return <strong>{values[0]}</strong>;
+    if (values.length === 2) return <><strong>{values[0]}</strong> or <strong>{values[1]}</strong></>;
+    return (
+      <>
+        {values.slice(0, -1).map((value, index) => (
+          <Fragment key={index}>
+            <strong>{value}</strong>
+            {index < values.length - 2 ? ', ' : ' '}
+          </Fragment>
+        ))}
+        or <strong>{values[values.length - 1]}</strong>
+      </>
+    );
+  };
+
   const header = (
     <TableHeader>
       <TableRow>
@@ -36,7 +62,23 @@ export default function ApplicationTables({
       <TableRow>
         <TableCell className="font-bold">Data Type</TableCell>
         {table?.columns.map((column: Column, index: number) => (
-          <TableCell key={index}>{column.data_type}</TableCell>
+          <TableCell key={index}>
+            <div className="flex flex-row items-center">
+            {column.data_type}
+            {column.data_type === 'enum' && (
+              <TooltipProvider>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="ml-[15px] h-4 w-4 text-gray-400" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>The value must be {formatEnumValues(column.enum_values || [])}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            </div>
+          </TableCell>
         ))}
       </TableRow>
       <TableRow>

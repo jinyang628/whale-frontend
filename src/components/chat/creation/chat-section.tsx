@@ -43,7 +43,6 @@ export default function BuildingChatSection({ applicationName, handleStartBuildi
     initializeUser();
   }, [isLoaded, user]);
 
-
   const handleSendMessage = async (message: string) => {
     const loadingToast = toast({
       title: "Creaing application",
@@ -97,6 +96,16 @@ export default function BuildingChatSection({ applicationName, handleStartBuildi
     }
   };
 
+  const handleReset = () => {
+    setChatHistory([
+      {
+        role: "assistant",
+        content: `Hello ${user?.firstName}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
+        application_content: null,
+      }
+    ]);
+  }
+
   return (
     <div className="flex flex-col w-full h-[800px] pt-[1%] space-y-2">
       <div className="flex flex-row space-x-4 items-center">
@@ -113,7 +122,7 @@ export default function BuildingChatSection({ applicationName, handleStartBuildi
         chatHistory={chatHistory}
         profileImageUrl={profileImageUrl}
         buildApplication={buildApplication}
-        onReset={() => setChatHistory([])}
+        handleReset={handleReset}
       />
       <MessageInput
         placeholder="Describe the application here..."
