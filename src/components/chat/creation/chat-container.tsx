@@ -35,9 +35,9 @@ export default function CreationChatContainer({
     <div className="relative h-full">
       <Button
         onClick={onReset}
-        className="absolute top-2 right-2 z-10 text-xs"
+        className="absolute top-2 right-2 z-10 text-xs h-6"
       >
-        RESET
+        CLEAR
       </Button>
       <ScrollArea ref={scrollAreaRef} className="rounded-md border p-4 h-full">
         {chatHistory.map((message: CreateMessage, index: number) => (

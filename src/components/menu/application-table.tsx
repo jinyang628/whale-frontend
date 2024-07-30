@@ -51,7 +51,7 @@ export default function ApplicationTables({
   );
 
   return (
-    <div className="h-[12vh] flex items-center justify-center">
+    <div className="h-[15vh] flex items-center justify-center">
       {visibleTable !== "" ? (
         <div className="w-full h-full overflow-auto">
           <UITable>

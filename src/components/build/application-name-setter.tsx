@@ -68,6 +68,16 @@ export default function ApplicationNameSetter( { applicationName, handleApplicat
         debouncedValidator(applicationName);
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          if (!isUniqueName) {
+            return;
+          }
+          handleStartBuilding(true);
+        }
+    };
+
     return (
         <div className="flex items-center justify-center h-full">
               <div className="flex flex-col space-y-4 w-[55%]">
@@ -75,6 +85,7 @@ export default function ApplicationNameSetter( { applicationName, handleApplicat
                   value={applicationName}
                   onChange={(e) => handleInputChange(e.target.value)}
                   placeholder="Enter the name of the application..."
+                  onKeyDown={handleKeyDown}
                 />
                 {
                     errorMessage ? (
