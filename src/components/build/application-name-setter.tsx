@@ -68,8 +68,8 @@ export default function ApplicationNameSetter( { applicationName, handleApplicat
         debouncedValidator(applicationName);
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === "Enter" && !e.shiftKey) {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
           e.preventDefault();
           if (!isUniqueName) {
             return;
