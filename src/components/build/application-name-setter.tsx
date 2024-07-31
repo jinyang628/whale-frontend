@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { validate } from "@/api/creation/application/validate";
 import { validateRequestSchema } from "@/types/api/application/validate";
 import { ZodError } from "zod";
+import { Loader } from 'lucide-react';
 
 type ApplicationNameSetterProps = {
   applicationName: string;
@@ -19,13 +20,17 @@ export default function ApplicationNameSetter({
 }: ApplicationNameSetterProps) {
   const [isUniqueName, setIsUniqueName] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const validateApplicationName = async (applicationName: string) => {
     if (applicationName === "") {
       setIsUniqueName(false);
       return;
     }
+
     try {
+      console.log("ERROR ARRIVES HERE");
+      setIsLoading(true);
       const parsedValidateRequest = validateRequestSchema.parse({
         name: applicationName,
       });
@@ -45,6 +50,8 @@ export default function ApplicationNameSetter({
       } else {
         console.error(error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,17 +92,28 @@ export default function ApplicationNameSetter({
   return (
     <div className="flex items-center justify-center h-full">
       <div className="flex flex-col space-y-4 w-[55%]">
-        <Input
-          value={applicationName}
-          onChange={(e) => handleInputChange(e.target.value)}
-          placeholder="Enter the name of the application..."
-          onKeyDown={handleKeyDown}
-        />
-        {errorMessage ? (
-          <div className="text-red-500 text-sm">{errorMessage}</div>
-        ) : (
-          <div className="text-gray-500 text-sm invisible">NO ERROR</div>
-        )}
+        <div className="flex flex-row items-center space-x-4">
+          <Input
+            value={applicationName}
+            onChange={(e) => handleInputChange(e.target.value)}
+            placeholder="Enter the name of the application..."
+            onKeyDown={handleKeyDown}
+          />
+          <div className="w-6 h-6 flex items-center justify-center">
+            {isLoading ? (
+              <Loader className="animate-spin" />
+            ) : (
+              <div className="w-6 h-6"></div>
+            )}
+          </div>
+        </div>
+        {
+          errorMessage ? (
+            <div className="text-red-500 text-sm">{errorMessage}</div>
+          ) : (
+            <div className="text-gray-500 text-sm invisible">NO ERROR</div>
+          )
+        }
         <Button
           onClick={() => handleStartBuilding(true)}
           disabled={!isUniqueName}
