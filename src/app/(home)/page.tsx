@@ -1,7 +1,7 @@
 "use client";
 
 import { selectApplication } from "@/api/home/application/select";
-import ChatSection from "@/components/chat/home/chat-section";
+import HomeChatSection from "@/components/chat/home/chat-section";
 import MenuSection from "@/components/menu/menu-section";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/components/ui/use-toast";
@@ -179,7 +179,7 @@ export default function Home() {
             applicationNames={applications.applicationNames}
             applicationContentArr={applications.applicationContentArr}
           />
-          <ChatSection
+          <HomeChatSection
             applicationNames={applications.applicationNames}
             userId={userId}
             profileImageUrl={profileImageUrl}

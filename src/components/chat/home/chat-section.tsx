@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MessageInput from "../message-input";
 import HomeChatContainer from "./chat-container";
-import { useRequestSchema } from "@/types/api/message/use";
+import { useMessageSchema, useRequestSchema } from "@/types/api/message/use";
 import { ReverseActionWrapper } from "@/types/api/message/reverse";
 import { toast } from "@/components/ui/use-toast";
 import { ZodError } from "zod";
@@ -19,9 +19,18 @@ export default function HomeChatSection({
   userId,
   profileImageUrl,
 }: ChatSectionProps) {
+  console.log(localStorage.getItem(`allWhaleHomePageMessages${userId}`))
   const [chatHistory, setChatHistory] = useState<UseMessage[]>([]);
   const [reverseStack, setReverseStack] = useState<ReverseActionWrapper[]>([]);
 
+  useEffect(() => {
+    const storedChatHistoryString: string[] = JSON.parse(localStorage.getItem(`allWhaleHomePageMessages${userId}`) || "[]");
+    const storedChatHistory: UseMessage[] = [];
+    for (let i = 0; i < storedChatHistoryString.length; i++) {
+      storedChatHistory[i] = useMessageSchema.parse(storedChatHistoryString[i]);
+    }
+    setChatHistory(storedChatHistory);
+  }, [userId])
   const handleSendMessage = async (message: string) => {
     const loadingToast = toast({
       title: "Fetching application",
@@ -39,6 +48,7 @@ export default function HomeChatSection({
       const sendMessageResponse = await sendMessage(parsedSendMessageRequest);
       setChatHistory(sendMessageResponse.chat_history);
       setReverseStack(sendMessageResponse.reverse_stack);
+      localStorage.setItem(`allWhaleHomePageMessages${userId}`, JSON.stringify(sendMessageResponse.chat_history));
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
@@ -74,6 +84,7 @@ export default function HomeChatSection({
         handleUpdateReverseStack={handleUpdateReverseStack}
         onReset={() => {
           setChatHistory([]);
+          localStorage.setItem(`allWhaleHomePageMessages${userId}`, "[]");
           setReverseStack([]);
         }}
       />

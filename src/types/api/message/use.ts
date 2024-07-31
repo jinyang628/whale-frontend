@@ -2,7 +2,7 @@ import { z } from "zod";
 import { reverseActionWrapperSchema } from "./reverse";
 import { roleSchema } from "./shared";
 
-const useMessageSchema = z.object({
+export const useMessageSchema = z.object({
   role: roleSchema,
   content: z.string(),
   rows: z.array(z.record(z.any())).optional().nullable(),
