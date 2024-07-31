@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/shared/theme/theme-provider";
-import { HotjarInit } from "@/hooks/useHotjar";
+import HotjarProvider from "@/hooks/hotjar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,15 +22,16 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <HotjarInit />
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-          </ThemeProvider>
+          <HotjarProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
+          </HotjarProvider>
         </body>
       </html>
     </ClerkProvider>

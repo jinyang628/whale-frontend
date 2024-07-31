@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import Hotjar from '@hotjar/browser'
 
-export function HotjarInit() {
+export default function HotjarProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const HOTJAR_VERSION = 6
     const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID
@@ -13,5 +13,5 @@ export function HotjarInit() {
     }
   }, [])
 
-  return null // This component doesn't render anything
+  return <>{children}</>
 }
