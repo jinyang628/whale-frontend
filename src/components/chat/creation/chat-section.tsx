@@ -10,13 +10,15 @@ import { build } from "@/api/creation/application/build";
 import { useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
+import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
+import { updateCache } from "@/api/home/user/update-cache";
 
 type CreationChatSectionProps = {
   applicationName: string;
   handleStartBuilding: (ready: boolean) => void;
 };
 
-export default function BuildingChatSection({
+export default function CreationChatSection({
   applicationName,
   handleStartBuilding,
 }: CreationChatSectionProps) {
@@ -89,6 +91,17 @@ export default function BuildingChatSection({
     });
     try {
       await build(applicationContent);
+
+      // Update cache
+      const selectedApplicationNamesString: string = localStorage.getItem("allSelectedWhaleApplicationNames") || "[]";
+      const selectedApplicationNames: string[] = JSON.parse(selectedApplicationNamesString);
+      selectedApplicationNames.push(applicationContent.name);
+      const updateCacheRequest = updateCacheRequestSchema.parse({
+        user_id: user?.id,
+        all_application_names: selectedApplicationNames,
+      });
+      await updateCache(updateCacheRequest);
+      
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());

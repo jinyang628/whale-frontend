@@ -66,17 +66,15 @@ export default function Home() {
           }
         }
 
-        setApplications((prev) => ({
-          applicationNames: [...prev.applicationNames, ...newApplicationNames],
-          applicationContentArr: [
-            ...prev.applicationContentArr,
-            ...newApplicationContents,
-          ],
-        }));        
+        setApplications({
+          applicationNames: newApplicationNames,
+          applicationContentArr: newApplicationContents,
+        });        
 
         // Mark as initialized
         isInitializedRef.current = true;
         setIsBlurred(false);
+        localStorage.setItem("allSelectedWhaleApplicationNames", JSON.stringify(newApplicationNames));
       } catch (error) {
         console.error(error);
       }
@@ -124,13 +122,16 @@ export default function Home() {
       );
 
       if (!applications.applicationNames.includes(applicationName)) {
+        const allApplicationNames: string[] = [...applications.applicationNames, applicationName]
+        const allApplicationContentArr: ApplicationContent[] = [
+          ...applications.applicationContentArr,
+          selectApplicationResponse.application,
+        ]
         setApplications({
-          applicationNames: [...applications.applicationNames, applicationName],
-          applicationContentArr: [
-            ...applications.applicationContentArr,
-            selectApplicationResponse.application,
-          ],
+          applicationNames: allApplicationNames,
+          applicationContentArr: allApplicationContentArr,
         });
+        localStorage.setItem("allSelectedWhaleApplicationNames", JSON.stringify(allApplicationNames));
       }
     } catch (error) {
       if (error instanceof ZodError) {

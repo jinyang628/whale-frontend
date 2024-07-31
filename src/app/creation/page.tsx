@@ -1,7 +1,7 @@
 "use client";
 
 import ApplicationNameSetter from "@/components/build/application-name-setter";
-import BuildingChatSection from "@/components/chat/creation/chat-section";
+import CreationChatSection from "@/components/chat/creation/chat-section";
 import HeaderButtons from "@/components/shared/header/header-buttons";
 import { Toaster } from "@/components/ui/toaster";
 import { SignedIn } from "@clerk/nextjs";
@@ -24,7 +24,7 @@ export default function Creation() {
       <SignedIn>
         {startBuilding ? (
           <div className="flex flex-col w-full h-full pt-[1%] space-y-2">
-            <BuildingChatSection
+            <CreationChatSection
               applicationName={applicationName}
               handleStartBuilding={handleStartBuilding}
             />
