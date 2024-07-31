@@ -88,7 +88,7 @@ export default function Home() {
     const initializeUser = async () => {
       if (isLoaded && user && !isInitializedRef.current) {
         const googleAccount = user?.externalAccounts.find(
-          account => account.provider === "google"
+          (account) => account.provider === "google",
         );
         const imageUrl = googleAccount?.imageUrl || user.imageUrl;
         setProfileImageUrl(imageUrl);
@@ -125,10 +125,7 @@ export default function Home() {
 
       if (!applications.applicationNames.includes(applicationName)) {
         setApplications({
-          applicationNames: [
-            ...applications.applicationNames,
-            applicationName,
-          ],
+          applicationNames: [...applications.applicationNames, applicationName],
           applicationContentArr: [
             ...applications.applicationContentArr,
             selectApplicationResponse.application,
@@ -148,9 +145,8 @@ export default function Home() {
 
   const removeApplication = async (applicationName: string) => {
     try {
-      const updatedApplications: string[] = applications.applicationNames.filter(
-        (app) => app !== applicationName,
-      );
+      const updatedApplications: string[] =
+        applications.applicationNames.filter((app) => app !== applicationName);
       setApplications({
         applicationNames: updatedApplications,
         applicationContentArr: applications.applicationContentArr.filter(

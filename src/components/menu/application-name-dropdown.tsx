@@ -52,10 +52,7 @@ export function ApplicationNameDropdown({
           <Label className="flex pb-[5%] justify-center">
             View Selected Applications
           </Label>
-          <Button
-            variant="outline"
-            disabled={applicationNames.length === 0}
-          >
+          <Button variant="outline" disabled={applicationNames.length === 0}>
             {visibleApplication || "No Application Selected"}
           </Button>
         </div>

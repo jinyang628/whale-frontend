@@ -16,14 +16,17 @@ type CreationChatSectionProps = {
   handleStartBuilding: (ready: boolean) => void;
 };
 
-export default function BuildingChatSection({ applicationName, handleStartBuilding }: CreationChatSectionProps) {
+export default function BuildingChatSection({
+  applicationName,
+  handleStartBuilding,
+}: CreationChatSectionProps) {
   const { user, isLoaded } = useUser();
   const [chatHistory, setChatHistory] = useState<CreateMessage[]>([
     {
       role: "assistant",
       content: `Hello ${user?.firstName}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
       application_content: null,
-    }
+    },
   ]);
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const isInitializedRef = useRef(false);
@@ -32,7 +35,7 @@ export default function BuildingChatSection({ applicationName, handleStartBuildi
     const initializeUser = async () => {
       if (isLoaded && user && !isInitializedRef.current) {
         const googleAccount = user?.externalAccounts.find(
-          account => account.provider === "google"
+          (account) => account.provider === "google",
         );
         const imageUrl = googleAccount?.imageUrl || user.imageUrl;
         setProfileImageUrl(imageUrl);
@@ -69,7 +72,8 @@ export default function BuildingChatSection({ applicationName, handleStartBuildi
       }
       toast({
         title: "Internal Error",
-        description: "Failed to generate response. Please rephrase your instruction and try again.",
+        description:
+          "Failed to generate response. Please rephrase your instruction and try again.",
         duration: 5000,
       });
     } finally {
@@ -102,16 +106,16 @@ export default function BuildingChatSection({ applicationName, handleStartBuildi
         role: "assistant",
         content: `Hello ${user?.firstName}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
         application_content: null,
-      }
+      },
     ]);
-  }
+  };
 
   return (
     <div className="flex flex-col w-full h-[800px] pt-[1%] space-y-2">
       <div className="flex flex-row space-x-4 items-center">
-        <div className="ml-[2%] text-3xl">{applicationName}</div>  
-        <Button 
-          variant="outline" 
+        <div className="ml-[2%] text-3xl">{applicationName}</div>
+        <Button
+          variant="outline"
           size="icon"
           onClick={() => handleStartBuilding(false)}
         >

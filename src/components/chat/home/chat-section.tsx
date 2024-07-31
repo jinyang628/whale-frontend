@@ -47,7 +47,8 @@ export default function HomeChatSection({
       }
       toast({
         title: "Internal Error",
-        description: "Failed to generate response. Please rephrase your instruction and try again.",
+        description:
+          "Failed to generate response. Please rephrase your instruction and try again.",
         duration: 5000,
       });
     } finally {

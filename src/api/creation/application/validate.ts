@@ -1,16 +1,22 @@
 "use server";
 
-import { ValidateRequest, validateResponseSchema, ValidateResponse } from "@/types/api/application/validate";
+import {
+  ValidateRequest,
+  validateResponseSchema,
+  ValidateResponse,
+} from "@/types/api/application/validate";
 
 import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const SERVICE_ENDPOINT = "application/validate";
 
-export async function validate(input: ValidateRequest): Promise<ValidateResponse> {
+export async function validate(
+  input: ValidateRequest,
+): Promise<ValidateResponse> {
   try {
     const response = await axios.get(`${BASE_URL}/${SERVICE_ENDPOINT}`, {
-        params: input,
+      params: input,
     });
     const validateResponse = validateResponseSchema.parse(response.data);
     return validateResponse;
