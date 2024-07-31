@@ -72,7 +72,7 @@ export default function Home() {
             ...prev.applicationContentArr,
             ...newApplicationContents,
           ],
-        }));
+        }));        
 
         // Mark as initialized
         isInitializedRef.current = true;

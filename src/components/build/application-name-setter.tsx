@@ -29,7 +29,6 @@ export default function ApplicationNameSetter({
     }
 
     try {
-      console.log("ERROR ARRIVES HERE");
       setIsLoading(true);
       const parsedValidateRequest = validateRequestSchema.parse({
         name: applicationName,
