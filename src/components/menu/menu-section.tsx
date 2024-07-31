@@ -53,9 +53,7 @@ export default function MenuSection({
 
   useEffect(() => {
     if (applicationNames && applicationNames.length > 0) {
-      setVisibleApplicationName(
-        applicationNames[applicationNames.length - 1],
-      );
+      setVisibleApplicationName(applicationNames[applicationNames.length - 1]);
       const tables: Table[] =
         applicationContentArr[applicationContentArr.length - 1].tables;
       setAllTables(tables);
