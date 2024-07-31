@@ -30,6 +30,7 @@ export default function CreationChatSection({
       application_content: null,
     },
   ]);
+  const [selectedApplicationNames, setSelectedApplicationNames] = useState<string[]>([]);
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const isInitializedRef = useRef(false);
 
@@ -41,6 +42,11 @@ export default function CreationChatSection({
         );
         const imageUrl = googleAccount?.imageUrl || user.imageUrl;
         setProfileImageUrl(imageUrl);
+
+        const selectedApplicationNamesString: string = localStorage.getItem(`allSelectedWhaleApplicationNames${user?.id}`) || "[]";
+        const selectedApplicationNames: string[] = JSON.parse(selectedApplicationNamesString);
+        setSelectedApplicationNames(selectedApplicationNames);
+
         isInitializedRef.current = true;
       }
     };
@@ -58,6 +64,8 @@ export default function CreationChatSection({
       const parsedSendMessageRequest = createRequestSchema.parse({
         message: message,
         chat_history: chatHistory,
+        user_id: user?.id,
+        all_application_names: selectedApplicationNames,
       });
       const sendMessageResponse = await createMessage(parsedSendMessageRequest);
       if (sendMessageResponse.is_finished) {
@@ -93,15 +101,14 @@ export default function CreationChatSection({
       await build(applicationContent);
 
       // Update cache
-      const selectedApplicationNamesString: string = localStorage.getItem("allSelectedWhaleApplicationNames") || "[]";
-      const selectedApplicationNames: string[] = JSON.parse(selectedApplicationNamesString);
-      selectedApplicationNames.push(applicationContent.name);
+      const updatedApplicationNames: string[] = [...selectedApplicationNames, applicationContent.name];
+      setSelectedApplicationNames(updatedApplicationNames);
       const updateCacheRequest = updateCacheRequestSchema.parse({
         user_id: user?.id,
-        all_application_names: selectedApplicationNames,
+        all_application_names: updatedApplicationNames,
       });
       await updateCache(updateCacheRequest);
-      
+
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());

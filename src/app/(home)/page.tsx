@@ -74,12 +74,12 @@ export default function Home() {
         // Mark as initialized
         isInitializedRef.current = true;
         setIsBlurred(false);
-        localStorage.setItem("allSelectedWhaleApplicationNames", JSON.stringify(newApplicationNames));
+        localStorage.setItem(`allSelectedWhaleApplicationNames${user?.id}`, JSON.stringify(newApplicationNames));
       } catch (error) {
         console.error(error);
       }
     },
-    [applications],
+    [applications, user],
   );
 
   useEffect(() => {
@@ -131,7 +131,7 @@ export default function Home() {
           applicationNames: allApplicationNames,
           applicationContentArr: allApplicationContentArr,
         });
-        localStorage.setItem("allSelectedWhaleApplicationNames", JSON.stringify(allApplicationNames));
+        localStorage.setItem(`allSelectedWhaleApplicationNames${user?.id}`, JSON.stringify(allApplicationNames));
       }
     } catch (error) {
       if (error instanceof ZodError) {
