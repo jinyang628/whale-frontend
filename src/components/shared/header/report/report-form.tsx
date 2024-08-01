@@ -30,7 +30,7 @@ export default function ReportForm({ handleSubmitFeedback }: ReportFormProps) {
   const form = useForm<FeedbackRequest>({
     resolver: zodResolver(feedbackRequestSchema),
     defaultValues: {
-      id: user?.id,
+      id: user?.id || null,
       name: "",
       email: user?.primaryEmailAddress?.emailAddress ?? "",
       feedback: "",

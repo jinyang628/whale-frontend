@@ -13,7 +13,7 @@ export type CreateMessage = z.infer<typeof createMessageSchema>;
 export const createRequestSchema = z.object({
   message: z.string(),
   chat_history: z.array(createMessageSchema),
-  user_id: z.string(),
+  user_id: z.string().nullable(),
   all_application_names: z.array(z.string()),
 });
 

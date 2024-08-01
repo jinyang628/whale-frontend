@@ -4,7 +4,6 @@ import ApplicationNameSetter from "@/components/build/application-name-setter";
 import CreationChatSection from "@/components/chat/creation/chat-section";
 import HeaderButtons from "@/components/shared/header/header-buttons";
 import { Toaster } from "@/components/ui/toaster";
-import { SignedIn } from "@clerk/nextjs";
 import { useState } from "react";
 
 export default function Creation() {
@@ -21,22 +20,20 @@ export default function Creation() {
   return (
     <div className={`flex flex-col h-screen w-full p-[2%]`}>
       <HeaderButtons />
-      <SignedIn>
-        {startBuilding ? (
-          <div className="flex flex-col w-full h-full pt-[1%] space-y-2">
-            <CreationChatSection
-              applicationName={applicationName}
-              handleStartBuilding={handleStartBuilding}
-            />
-          </div>
-        ) : (
-          <ApplicationNameSetter
+      {startBuilding ? (
+        <div className="flex flex-col w-full h-full pt-[1%] space-y-2">
+          <CreationChatSection
             applicationName={applicationName}
-            handleApplicationNameChange={handleApplicationNameChange}
             handleStartBuilding={handleStartBuilding}
           />
-        )}
-      </SignedIn>
+        </div>
+      ) : (
+        <ApplicationNameSetter
+          applicationName={applicationName}
+          handleApplicationNameChange={handleApplicationNameChange}
+          handleStartBuilding={handleStartBuilding}
+        />
+      )}
       <Toaster />
     </div>
   );

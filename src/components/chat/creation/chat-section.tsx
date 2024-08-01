@@ -56,7 +56,7 @@ export default function CreationChatSection({
 
   const sendMessage = async (message: string) => {
     const loadingToast = toast({
-      title: "Creaing application",
+      title: "Creating application",
       description: "Please wait while we draft the application...",
       duration: Infinity,
     });
@@ -64,7 +64,7 @@ export default function CreationChatSection({
       const parsedSendMessageRequest = createRequestSchema.parse({
         message: message,
         chat_history: chatHistory,
-        user_id: user?.id,
+        user_id: user?.id || null,
         all_application_names: selectedApplicationNames,
       });
       const sendMessageResponse = await sendCreateMessage(parsedSendMessageRequest);

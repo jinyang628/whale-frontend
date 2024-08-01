@@ -12,7 +12,7 @@ import {
 } from "@/types/api/application/select";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ZodError } from "zod";
-import { useUser, SignedIn } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import HeaderButtons from "@/components/shared/header/header-buttons";
 import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/home/user/update-cache";
@@ -39,7 +39,6 @@ export default function Home() {
   const presetApplications = useCallback(
     async (userId: string, userEmail: string) => {
       if (isInitializedRef.current) return;
-
       try {
         const parsedGetCacheRequest = {
           user_id: userId,
@@ -73,7 +72,6 @@ export default function Home() {
 
         // Mark as initialized
         isInitializedRef.current = true;
-        setIsBlurred(false);
         localStorage.setItem(`allSelectedWhaleApplicationNames${user?.id}`, JSON.stringify(newApplicationNames));
       } catch (error) {
         toast({
@@ -81,6 +79,8 @@ export default function Home() {
           description: "Cache retrieval has failed. We apologise for the inconvenience caused.",
           duration: 5000,
         });
+      } finally {
+        setIsBlurred(false);
       }
     },
     [applications, user],
@@ -103,7 +103,9 @@ export default function Home() {
         }
       }
     };
-
+    if (!user) {
+      setIsBlurred(false);
+    }
     initializeUser();
   }, [isLoaded, user, presetApplications]);
 
@@ -179,22 +181,20 @@ export default function Home() {
   return (
     <div className={`flex flex-col h-screen w-full p-[2%]`}>
       <HeaderButtons />
-      <SignedIn>
-        <div>
-          <MenuSection
-            onSelectApplication={onSelectApplication}
-            onRemoveApplication={onRemoveApplication}
-            applicationNames={applications.applicationNames}
-            applicationContentArr={applications.applicationContentArr}
-          />
-          <HomeChatSection
-            applicationNames={applications.applicationNames}
-            userId={userId}
-            profileImageUrl={profileImageUrl}
-          />
-        </div>
-        {isBlurred && <LoadingBlur />}
-      </SignedIn>
+      <div>
+        <MenuSection
+          onSelectApplication={onSelectApplication}
+          onRemoveApplication={onRemoveApplication}
+          applicationNames={applications.applicationNames}
+          applicationContentArr={applications.applicationContentArr}
+        />
+        <HomeChatSection
+          applicationNames={applications.applicationNames}
+          userId={userId}
+          profileImageUrl={profileImageUrl}
+        />
+      </div>
+      {isBlurred && <LoadingBlur />}
       <Toaster />
     </div>
   );
