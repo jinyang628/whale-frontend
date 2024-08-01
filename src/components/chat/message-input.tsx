@@ -4,26 +4,26 @@ import { Textarea } from "../ui/textarea";
 
 type MessageInputProps = {
   placeholder: string;
-  handleSendMessage: (message: string) => void;
+  sendMessage: (message: string) => void;
 };
 
 export default function MessageInput({
   placeholder,
-  handleSendMessage,
+  sendMessage,
 }: MessageInputProps) {
   const [message, setMessage] = useState<string>("");
 
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     if (message.trim()) {
-      handleSendMessage(message);
+      sendMessage(message);
       setMessage("");
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit();
+      onSubmit();
     }
   };
 
@@ -34,10 +34,10 @@ export default function MessageInput({
         className="w-full h-[15%]"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onKeyDown={onKeyDown}
       />
       <div className="flex pt-[1%] justify-end">
-        <Button type="submit" onClick={handleSubmit}>
+        <Button type="submit" onClick={onSubmit}>
           Send
         </Button>
       </div>

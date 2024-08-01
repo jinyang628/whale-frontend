@@ -3,7 +3,7 @@ import MessageInput from "../message-input";
 import { CreateMessage, createRequestSchema } from "@/types/api/message/create";
 import { toast } from "@/components/ui/use-toast";
 import { ZodError } from "zod";
-import { createMessage } from "@/api/creation/message/create";
+import { sendCreateMessage } from "@/api/creation/message/create";
 import CreationChatContainer from "./chat-container";
 import { ApplicationContent } from "@/types/api/application/base";
 import { build } from "@/api/creation/application/build";
@@ -54,7 +54,7 @@ export default function CreationChatSection({
     initializeUser();
   }, [isLoaded, user]);
 
-  const handleSendMessage = async (message: string) => {
+  const sendMessage = async (message: string) => {
     const loadingToast = toast({
       title: "Creaing application",
       description: "Please wait while we draft the application...",
@@ -67,7 +67,7 @@ export default function CreationChatSection({
         user_id: user?.id,
         all_application_names: selectedApplicationNames,
       });
-      const sendMessageResponse = await createMessage(parsedSendMessageRequest);
+      const sendMessageResponse = await sendCreateMessage(parsedSendMessageRequest);
       if (sendMessageResponse.is_finished) {
         sendMessageResponse.chat_history[
           sendMessageResponse.chat_history.length - 1
@@ -150,7 +150,7 @@ export default function CreationChatSection({
       />
       <MessageInput
         placeholder="Describe the application here..."
-        handleSendMessage={handleSendMessage}
+        sendMessage={sendMessage}
       />
     </div>
   );

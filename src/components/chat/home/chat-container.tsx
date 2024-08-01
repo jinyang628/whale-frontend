@@ -11,8 +11,7 @@ type UsageChatContainerProps = {
   chatHistory: UseMessage[];
   reverseStack: ReverseActionWrapper[];
   profileImageUrl: string;
-  handleUpdateChatHistory: (chatHistory: UseMessage[]) => void;
-  handleUpdateReverseStack: (reverseStack: ReverseActionWrapper[]) => void;
+  updateChatHistoryState: (chatHistory: UseMessage[], reverseStack: ReverseActionWrapper[]) => void;
   onReset: () => void;
 };
 
@@ -20,8 +19,7 @@ export default function HomeChatContainer({
   chatHistory,
   reverseStack,
   profileImageUrl,
-  handleUpdateChatHistory,
-  handleUpdateReverseStack,
+  updateChatHistoryState,
   onReset,
 }: UsageChatContainerProps) {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -68,8 +66,7 @@ export default function HomeChatContainer({
       break;
     }
 
-    handleUpdateChatHistory(chatHistoryCopy);
-    handleUpdateReverseStack(reverseStackCopy);
+    updateChatHistoryState(chatHistoryCopy, reverseStackCopy);
   };
 
   return (

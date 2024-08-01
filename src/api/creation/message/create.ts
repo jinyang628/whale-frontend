@@ -11,7 +11,7 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const SERVICE_ENDPOINT = "message/create";
 
-export async function createMessage(
+export async function sendCreateMessage(
   input: CreateRequest,
 ): Promise<CreateResponse> {
   try {

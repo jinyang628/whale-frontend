@@ -26,11 +26,6 @@ export default function HomeMessageBlock({
   reverse,
 }: MessageBlockProps) {
   const isAssistantMessage: boolean = role === "assistant";
-  const handleReverse = async () => {
-    if (reverse) {
-      reverse(message);
-    }
-  };
 
   return (
     <div
@@ -55,7 +50,7 @@ export default function HomeMessageBlock({
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleReverse}
+              onClick={() => reverse(message)}
               className="absolute bottom-1 right-1 p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
               <RotateCcw size={16} />
