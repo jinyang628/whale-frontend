@@ -19,7 +19,6 @@ export default function HomeChatSection({
   userId,
   profileImageUrl,
 }: ChatSectionProps) {
-  console.log(localStorage.getItem(`allWhaleHomePageMessages${userId}`))
   const [chatHistory, setChatHistory] = useState<UseMessage[]>([]);
   const [reverseStack, setReverseStack] = useState<ReverseActionWrapper[]>([]);
 
@@ -31,10 +30,11 @@ export default function HomeChatSection({
     }
     setChatHistory(storedChatHistory);
   }, [userId])
+
   const handleSendMessage = async (message: string) => {
     const loadingToast = toast({
-      title: "Fetching application",
-      description: "Please wait while we fetch the application...",
+      title: "Sending message",
+      description: "Please wait while whale generates a response...",
       duration: Infinity,
     });
     try {
@@ -49,6 +49,8 @@ export default function HomeChatSection({
       setChatHistory(sendMessageResponse.chat_history);
       setReverseStack(sendMessageResponse.reverse_stack);
       localStorage.setItem(`allWhaleHomePageMessages${userId}`, JSON.stringify(sendMessageResponse.chat_history));
+      // Need to store the reverse stack too
+      // TODO: Refactoring efforts stopped here
     } catch (error) {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());

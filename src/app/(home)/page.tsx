@@ -17,7 +17,7 @@ import HeaderButtons from "@/components/shared/header/header-buttons";
 import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
-import Image from "next/image";
+import LoadingBlur from "@/components/shared/loading-blur";
 
 interface Applications {
   applicationContentArr: ApplicationContent[];
@@ -76,7 +76,11 @@ export default function Home() {
         setIsBlurred(false);
         localStorage.setItem(`allSelectedWhaleApplicationNames${user?.id}`, JSON.stringify(newApplicationNames));
       } catch (error) {
-        console.error(error);
+        toast({
+          title: "Error fetching cached applications",
+          description: "Cache retrieval has failed. We apologise for the inconvenience caused.",
+          duration: 5000,
+        });
       }
     },
     [applications, user],
@@ -103,7 +107,7 @@ export default function Home() {
     initializeUser();
   }, [isLoaded, user, presetApplications]);
 
-  const handleSelectApplication = async (applicationName: string) => {
+  const onSelectApplication = async (applicationName: string) => {
     const loadingToast = toast({
       title: "Fetching application",
       description: "Please wait while we fetch the application...",
@@ -137,14 +141,18 @@ export default function Home() {
       if (error instanceof ZodError) {
         console.error("Zod error: ", error.flatten());
       } else {
-        console.error(error);
+        toast({
+          title: "Application Not Found",
+          description: "Please ensure that the application exists.",
+          duration: 5000,
+        });
       }
     } finally {
       loadingToast.dismiss();
     }
   };
 
-  const removeApplication = async (applicationName: string) => {
+  const onRemoveApplication = async (applicationName: string) => {
     try {
       const updatedApplications: string[] =
         applications.applicationNames.filter((app) => app !== applicationName);
@@ -174,8 +182,8 @@ export default function Home() {
       <SignedIn>
         <div>
           <MenuSection
-            handleSelectApplication={handleSelectApplication}
-            removeApplication={removeApplication}
+            onSelectApplication={onSelectApplication}
+            onRemoveApplication={onRemoveApplication}
             applicationNames={applications.applicationNames}
             applicationContentArr={applications.applicationContentArr}
           />
@@ -185,23 +193,7 @@ export default function Home() {
             profileImageUrl={profileImageUrl}
           />
         </div>
-        {isBlurred && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white dark:bg-black bg-opacity-90 z-50">
-            <div className="text-center">
-              <div className="relative w-64 h-64 mx-auto mb-4">
-                <Image
-                  src="/assistant.jpg"
-                  alt="Loading"
-                  layout="fill"
-                  objectFit="contain"
-                />
-              </div>
-              <p className="text-lg font-semibold">
-                Preparing the ocean for your whale...
-              </p>
-            </div>
-          </div>
-        )}
+        {isBlurred && <LoadingBlur />}
       </SignedIn>
       <Toaster />
     </div>

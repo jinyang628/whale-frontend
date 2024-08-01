@@ -21,9 +21,7 @@ export async function selectApplication(
       response.data,
     );
     return selectApplicationResponse;
-    // TODO: More robust error handling + consider whether we want to rethrow it
   } catch (error) {
-    console.error(error);
     throw error;
   }
 }

@@ -26,7 +26,7 @@ export default function ApplicationTables({
   allTables,
 }: ApplicationTablesProps) {
   const table: Table | null = allTables.filter(
-    (table) => table.name === visibleTable,
+    (table: Table) => table.name === visibleTable,
   )[0];
 
   const formatEnumValues = (values: string[]) => {
@@ -61,6 +61,24 @@ export default function ApplicationTables({
     </TableHeader>
   );
 
+  const enumToolTip = (column: Column) => {
+    return (
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger asChild>
+            <HelpCircle className="ml-[15px] h-4 w-4 text-gray-400" />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              The value must be{" "}
+              {formatEnumValues(column.enum_values || [])}
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    )
+  }
+
   const body = (
     <TableBody>
       <TableRow>
@@ -69,21 +87,7 @@ export default function ApplicationTables({
           <TableCell key={index}>
             <div className="flex flex-row items-center">
               {column.data_type}
-              {column.data_type === "enum" && (
-                <TooltipProvider>
-                  <Tooltip delayDuration={0}>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="ml-[15px] h-4 w-4 text-gray-400" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>
-                        The value must be{" "}
-                        {formatEnumValues(column.enum_values || [])}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
+              {column.data_type === "enum" && enumToolTip(column)}
             </div>
           </TableCell>
         ))}

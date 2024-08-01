@@ -24,14 +24,14 @@ export function TableNameDropdown({
 }: TableNameDropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const handleOpenChange = (open: boolean) => {
+  const onOpenChange = (open: boolean) => {
     if (allTables.length > 0) {
       setIsOpen(open);
     }
   };
 
   return (
-    <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
+    <DropdownMenu open={isOpen} onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>
         <div className="flex flex-col">
           <Label className="flex pb-[5%] justify-center">

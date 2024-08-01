@@ -7,61 +7,78 @@ import { ApplicationContent, Table } from "@/types/api/application/base";
 import ApplicationTables from "./application-table";
 
 interface MenuSectionProps {
-  handleSelectApplication: (applicationName: string) => void;
-  removeApplication: (applicationName: string) => void;
+  onSelectApplication: (applicationName: string) => void;
+  onRemoveApplication: (applicationName: string) => void;
   applicationNames: string[];
   applicationContentArr: ApplicationContent[];
 }
 
+interface MenuState {
+  visibleApplication: string;
+  visibleTable: string;
+  allTables: Table[];
+}
+
 export default function MenuSection({
-  handleSelectApplication,
-  removeApplication,
+  onSelectApplication,
+  onRemoveApplication,
   applicationNames,
   applicationContentArr,
 }: MenuSectionProps) {
   const [applicationName, setApplicationName] = useState<string>("");
-  const [visibleApplication, setVisibleApplicationName] = useState<string>("");
-  const [visibleTable, setVisibleTable] = useState<string>("");
-  const [allTables, setAllTables] = useState<Table[]>([]);
+  const [menuState, setMenuState] = useState<MenuState>({
+    visibleApplication: "",
+    visibleTable: "",
+    allTables: [],
+  });
 
-  const handleSubmit = async () => {
+  const onSubmit = async () => {
     if (applicationName.trim()) {
-      handleSelectApplication(applicationName);
+      onSelectApplication(applicationName);
       setApplicationName("");
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      handleSubmit();
+      onSubmit();
     }
   };
 
   const updateVisibleApplication = (applicationName: string) => {
-    setVisibleApplicationName(applicationName);
     const tables: Table[] = applicationContentArr.filter(
-      (app) => app.name === applicationName,
+      (app: ApplicationContent) => app.name === applicationName,
     )[0].tables;
-    setAllTables(tables);
-    setVisibleTable(tables[0].name);
+    setMenuState({
+      visibleApplication: applicationName,
+      visibleTable: tables[0].name,
+      allTables: tables,
+    });
   };
 
   const updateVisibleTable = (tableName: string) => {
-    setVisibleTable(tableName);
+    setMenuState({
+      ...menuState,
+      visibleTable: tableName,
+    });
   };
 
   useEffect(() => {
     if (applicationNames && applicationNames.length > 0) {
-      setVisibleApplicationName(applicationNames[applicationNames.length - 1]);
       const tables: Table[] =
         applicationContentArr[applicationContentArr.length - 1].tables;
-      setAllTables(tables);
-      setVisibleTable(tables[0].name);
+      setMenuState({
+        visibleApplication: applicationNames[applicationNames.length - 1],
+        visibleTable: tables[0].name,
+        allTables: tables,
+      });
     } else {
-      setVisibleApplicationName("");
-      setAllTables([]);
-      setVisibleTable("");
+      setMenuState({
+        visibleApplication: "",
+        visibleTable: "",
+        allTables: [],
+      });
     }
   }, [applicationContentArr, applicationNames]);
 
@@ -75,28 +92,31 @@ export default function MenuSection({
             className="flex-grow mr-[1%]"
             value={applicationName}
             onChange={(e) => setApplicationName(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={onKeyDown}
           />
-          <Button type="submit" onClick={handleSubmit}>
+          <Button type="submit" onClick={onSubmit}>
             Add Application
           </Button>
         </div>
         <div className="w-1/3 flex justify-around">
           <ApplicationNameDropdown
             applicationNames={applicationNames}
-            visibleApplication={visibleApplication}
+            visibleApplication={menuState.visibleApplication}
             updateVisibleApplication={updateVisibleApplication}
-            removeApplication={removeApplication}
+            onRemoveApplication={onRemoveApplication}
           />
           <TableNameDropdown
-            allTables={allTables}
-            visibleTable={visibleTable}
+            allTables={menuState.allTables}
+            visibleTable={menuState.visibleTable}
             updateVisibleTable={updateVisibleTable}
           />
         </div>
       </div>
       <div className="flex justify-center">
-        <ApplicationTables visibleTable={visibleTable} allTables={allTables} />
+        <ApplicationTables 
+          visibleTable={menuState.visibleTable} 
+          allTables={menuState.allTables} 
+        />
       </div>
     </div>
   );
