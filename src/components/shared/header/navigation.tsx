@@ -9,13 +9,13 @@ export default function Navigation() {
     <nav className="flex space-x-4">
       <Link
         href="/"
-        className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === "/" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"}`}
+        className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === "/" ? "bg-black dark:bg-white text-white dark:text-black" : "text-black-300 hover:bg-gray-700 hover:text-white"}`}
       >
         Home
       </Link>
       <Link
         href="/creation"
-        className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === "/creation" ? "bg-gray-900 text-white" : "text-gray-300 hover:bg-gray-700 hover:text-white"}`}
+        className={`px-3 py-2 rounded-md text-sm font-medium ${pathname === "/creation" ? "bg-black dark:bg-white text-white dark:text-black" : "text-black-300 hover:bg-gray-700 hover:text-white"}`}
       >
         Create
       </Link>

@@ -17,7 +17,7 @@ import HeaderButtons from "@/components/shared/header/header-buttons";
 import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
-import LoadingBlur from "@/components/shared/loading-blur";
+import Blur from "@/components/shared/blur";
 import { getHomePageSelectedApplicationsFlag } from "@/types/flags";
 
 interface Applications {
@@ -30,7 +30,6 @@ export default function Home() {
     applicationContentArr: [],
     applicationNames: [],
   });
-
   const [userId, setUserId] = useState<string | null>(null);
   const [isBlurred, setIsBlurred] = useState<boolean>(true);
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
@@ -73,7 +72,9 @@ export default function Home() {
 
         // Mark as initialized
         isInitializedRef.current = true;
-        localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(newApplicationNames));
+        if (userId) {
+          localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(newApplicationNames));
+        }
       } catch (error) {
         toast({
           title: "Error fetching cached applications",
@@ -106,8 +107,9 @@ export default function Home() {
     };
     if (!user) {
       setIsBlurred(false);
+    } else {
+      initializeUser();
     }
-    initializeUser();
   }, [isLoaded, user, presetApplications]);
 
   const onSelectApplication = async (applicationName: string) => {
@@ -139,7 +141,9 @@ export default function Home() {
           applicationContentArr: allApplicationContentArr,
         });
         // Need to set again even though this is from cache because of automatic cache insertion from creation tab
-        localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(allApplicationNames));
+        if (userId) {
+          localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(allApplicationNames));
+        }
       }
     } catch (error) {
       if (error instanceof ZodError) {
@@ -201,7 +205,7 @@ export default function Home() {
           profileImageUrl={profileImageUrl}
         />
       </div>
-      {isBlurred && <LoadingBlur />}
+      {isBlurred && <Blur />}
       <Toaster />
     </div>
   );

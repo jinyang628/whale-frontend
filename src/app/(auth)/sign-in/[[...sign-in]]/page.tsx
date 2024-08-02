@@ -7,6 +7,7 @@ const SignInPage = () => {
   const { resolvedTheme } = useTheme();
   return (
     <SignIn
+      signUpUrl="/sign-up"
       appearance={{
         baseTheme: resolvedTheme === "dark" ? dark : undefined,
       }}

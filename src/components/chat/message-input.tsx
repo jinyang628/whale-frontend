@@ -4,11 +4,13 @@ import { Textarea } from "../ui/textarea";
 
 type MessageInputProps = {
   placeholder: string;
+  isContextReady: boolean;
   sendMessage: (message: string) => void;
 };
 
 export default function MessageInput({
   placeholder,
+  isContextReady,
   sendMessage,
 }: MessageInputProps) {
   const [message, setMessage] = useState<string>("");
@@ -37,7 +39,11 @@ export default function MessageInput({
         onKeyDown={onKeyDown}
       />
       <div className="flex pt-[1%] justify-end">
-        <Button type="submit" onClick={onSubmit}>
+        <Button 
+          type="submit" 
+          onClick={onSubmit}
+          disabled={!message.trim() || !isContextReady}
+        >
           Send
         </Button>
       </div>

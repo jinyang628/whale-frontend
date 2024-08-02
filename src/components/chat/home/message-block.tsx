@@ -83,7 +83,12 @@ export default function HomeMessageBlock({
               {rows.map((row, index) => (
                 <TableRow key={index}>
                   {Object.values(row).map((value, cellIndex) => (
-                    <TableCell key={cellIndex}>{String(value)}</TableCell>
+                    <TableCell key={cellIndex}>
+                      {typeof value === 'number' && !Number.isInteger(value)
+                        ? value.toFixed(2)
+                        : String(value)
+                      }
+                    </TableCell>
                   ))}
                 </TableRow>
               ))}

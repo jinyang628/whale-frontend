@@ -6,9 +6,10 @@ import { ReverseActionWrapper, reverseActionWrapperSchema } from "@/types/api/me
 import { toast } from "@/components/ui/use-toast";
 import { UseMessage } from "@/types/api/message/use";
 import { sendUseMessage } from "@/api/home/message/use";
-import { getHomePageChatHistoryFlag, getHomePageReverseStackFlag } from "@/types/flags";
+import { getHomePageChatHistoryFlag, getHomePageReverseStackFlag, getUsageFlag } from "@/types/flags";
+import Blur from "@/components/shared/blur";
 
-interface ChatSectionProps {
+interface HomeChatSectionProps {
   applicationNames: string[];
   userId: string | null;
   profileImageUrl: string;
@@ -19,18 +20,25 @@ interface ChatHistoryState {
   reverseStack: ReverseActionWrapper[];
 }
 
+const ANONYMOUS_USAGE_LIMIT = 20;
+
 export default function HomeChatSection({
   applicationNames,
   userId,
   profileImageUrl,
-}: ChatSectionProps) {
+}: HomeChatSectionProps) {
 
   const [chatHistoryState, setChatHistoryState] = useState<ChatHistoryState>({
     chatHistory: [],
     reverseStack: [],
   });
+  const [allowUntrackedUsage, setAllowUntrackedUsage] = useState<boolean>(true);
 
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
+
     const storedChatHistoryString: string[] = JSON.parse(localStorage.getItem(getHomePageChatHistoryFlag(userId)) || "[]");
     const storedChatHistory: UseMessage[] = [];
     for (let i = 0; i < storedChatHistoryString.length; i++) {
@@ -50,6 +58,10 @@ export default function HomeChatSection({
   }, [userId])
 
   const sendMessage = async (message: string) => {
+    if (!userId && parseInt(localStorage.getItem(getUsageFlag()) || "0") >= ANONYMOUS_USAGE_LIMIT) {
+      setAllowUntrackedUsage(false);
+      return;
+    }
     const loadingToast = toast({
       title: "Sending message",
       description: "Please wait while whale generates a response...",
@@ -68,8 +80,14 @@ export default function HomeChatSection({
         chatHistory: sendMessageResponse.chat_history,
         reverseStack: sendMessageResponse.reverse_stack,
       });
-      localStorage.setItem(getHomePageChatHistoryFlag(userId), JSON.stringify(sendMessageResponse.chat_history));
-      localStorage.setItem(getHomePageReverseStackFlag(userId), JSON.stringify(sendMessageResponse.reverse_stack));
+
+      if (userId) {
+        localStorage.setItem(getHomePageChatHistoryFlag(userId), JSON.stringify(sendMessageResponse.chat_history));
+        localStorage.setItem(getHomePageReverseStackFlag(userId), JSON.stringify(sendMessageResponse.reverse_stack));
+      }
+      // Track the usage of users that did not log in
+      const trackedUsage: number = parseInt(localStorage.getItem(getUsageFlag()) || "0");
+      localStorage.setItem(getUsageFlag(), (trackedUsage + 1).toString());
     } catch (error) {
       toast({
         title: "Inference Error",
@@ -91,24 +109,38 @@ export default function HomeChatSection({
 
   return (
     <div className="flex flex-col w-full h-[550px] pt-[1%] space-y-2">
-      <HomeChatContainer
-        chatHistory={chatHistoryState.chatHistory}
-        reverseStack={chatHistoryState.reverseStack}
-        profileImageUrl={profileImageUrl}
-        updateChatHistoryState={updateChatHistoryState}
-        onReset={() => {
-          localStorage.setItem(getHomePageChatHistoryFlag(userId), "[]");
-          localStorage.setItem(getHomePageReverseStackFlag(userId), "[]");
-          setChatHistoryState({
-            chatHistory: [],
-            reverseStack: [],
-          });
-        }}
-      />
-      <MessageInput
-        placeholder="Enter instruction here..."
-        sendMessage={sendMessage}
-      />
+      {
+        allowUntrackedUsage ? (
+          <>
+            <HomeChatContainer
+              chatHistory={chatHistoryState.chatHistory}
+              reverseStack={chatHistoryState.reverseStack}
+              profileImageUrl={profileImageUrl}
+              updateChatHistoryState={updateChatHistoryState}
+              onReset={() => {
+                if (userId) {
+                  localStorage.setItem(getHomePageChatHistoryFlag(userId), "[]");
+                  localStorage.setItem(getHomePageReverseStackFlag(userId), "[]");
+                }
+                setChatHistoryState({
+                  chatHistory: [],
+                  reverseStack: [],
+                });
+              }}
+            />
+            <MessageInput
+              placeholder="Enter instruction here..."
+              isContextReady={applicationNames.length >= 0}
+              sendMessage={sendMessage}
+            />
+          </>
+        ) : (
+          <Blur 
+            showAuth={true}
+          />
+        )
+      }
+      
     </div>
   );
 }

@@ -44,10 +44,11 @@ export default function CreationChatSection({
         const imageUrl = googleAccount?.imageUrl || user.imageUrl;
         setProfileImageUrl(imageUrl);
 
-        const selectedApplicationNamesString: string = localStorage.getItem(getHomePageSelectedApplicationsFlag(user?.id)) || "[]";
-        const selectedApplicationNames: string[] = JSON.parse(selectedApplicationNamesString);
-        setSelectedApplicationNames(selectedApplicationNames);
-
+        if (user?.id) {
+          const selectedApplicationNamesString: string = localStorage.getItem(getHomePageSelectedApplicationsFlag(user?.id)) || "[]";
+          const selectedApplicationNames: string[] = JSON.parse(selectedApplicationNamesString);
+          setSelectedApplicationNames(selectedApplicationNames);
+        }
         isInitializedRef.current = true;
       }
     };
@@ -151,6 +152,7 @@ export default function CreationChatSection({
       />
       <MessageInput
         placeholder="Describe the application here..."
+        isContextReady={applicationName !== ""}
         sendMessage={sendMessage}
       />
     </div>

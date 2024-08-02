@@ -106,13 +106,9 @@ export default function ApplicationNameSetter({
             )}
           </div>
         </div>
-        {
-          errorMessage ? (
-            <div className="text-red-500 text-sm">{errorMessage}</div>
-          ) : (
-            <div className="text-gray-500 text-sm invisible">NO ERROR</div>
-          )
-        }
+        <div className={`text-red-500 text-sm ${errorMessage ? "" : "invisible"}`}>
+          {errorMessage || "NO ERROR"}
+        </div>      
         <Button
           onClick={() => handleStartBuilding(true)}
           disabled={!isUniqueName}
