@@ -30,7 +30,7 @@ export default function Home() {
     applicationNames: [],
   });
 
-  const [userId, setUserId] = useState<string>("");
+  const [userId, setUserId] = useState<string | null>(null);
   const [isBlurred, setIsBlurred] = useState<boolean>(true);
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
   const { user, isLoaded } = useUser();
@@ -164,6 +164,11 @@ export default function Home() {
           (app) => app.name !== applicationName,
         ),
       });
+
+      // Do not initiate cache update if user is not logged in
+      if (!userId) {
+        return;
+      }
       const parsedUpdateCacheRequest = updateCacheRequestSchema.parse({
         user_id: userId,
         all_application_names: updatedApplications,

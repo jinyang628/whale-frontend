@@ -15,7 +15,7 @@ export const useRequestSchema = z.object({
   chat_history: z.array(useMessageSchema),
   reverse_stack: z.array(reverseActionWrapperSchema),
   application_names: z.array(z.string()),
-  user_id: z.string(),
+  user_id: z.string().nullable(),
 });
 
 export type UseRequest = z.infer<typeof useRequestSchema>;
