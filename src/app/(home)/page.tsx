@@ -25,62 +25,58 @@ interface Applications {
   applicationNames: string[];
 }
 
-// const DEFAULT_APPLICATION_NAMES = ["reading_list"];
-// const DEFAULT_APPLICATION_CONTENT_ARR: [
-//   ApplicationContent(
-//     name: "reading_list",
-//     tables: [{
-//       name: "articles",
-//       description: "This table stores information about articles in the reading list.",
-//       columns: [
-//         {
-//           name: "title",
-//           data_type: "string",
-//           enum_values: null,
-//           nullable: false,
-//           default_value: "",
-//           unique: false,
-//           foreign_key: null
-//         },
-//         {
-//           name: "reading_progress",
-//           data_type: "integer",
-//           enum_values: null,
-//           nullable: false,
-//           default_value: 0,
-//           unique: false,
-//           foreign_key: null
-//         },
-//         {
-//           name: "reading_progress",
-//           data_type: "integer",
-//           nullable: false,
-//           default_value: 0,
-//           unique: false,
-//         },
-//         {
-//           name: "recommendation",
-//           data_type: "enum",
-//           enum_values: ["recommended", "not recommended", "must-read"],
-//           nullable: false,
-//           default_value: "recommended",
-//           unique: false,
-//         },
-//       ],
-//       primary_key: "auto_increment",
-//       enable_created_at_timestamp: false,
-//       enable_updated_at_timestamp: false,
-    
-//     primary_key: "auto_increment",
-//     enable_created_at_timestamp: false,
-//     enable_updated_at_timestamp: false,
-//     }],
-//   )
-// ]
-
-
-
 export default function Home() {
+  const DEFAULT_APPLICATION_NAMES = ["reading_list"];
+  const DEFAULT_APPLICATION_CONTENT_ARR: ApplicationContent[] = [{
+    name: "reading_list",
+    tables: [{
+      name: "articles",
+      description: "This table stores information about articles in the reading list.",
+      columns: [
+        {
+          name: "title",
+          data_type: "string",
+          enum_values: null,
+          nullable: false,
+          default_value: "",
+          unique: false,
+          foreign_key: null,
+        },
+        {
+          name: "author",
+          data_type: "string",
+          enum_values: null,
+          nullable: false,
+          default_value: "",
+          unique: false,
+          foreign_key: null
+        },
+        {
+          name: "reading_progress",
+          data_type: "integer",
+          enum_values: null,
+          nullable: false,
+          default_value: 0,
+          unique: false,
+          foreign_key: null
+        },
+        {
+          name: "recommendation",
+          data_type: "enum",
+          enum_values: ["recommended", "not recommended", "must-read"],
+          nullable: false,
+          default_value: "recommended",
+          unique: false,
+          foreign_key: null
+        },
+      ],
+      primary_key: "auto_increment",
+      enable_created_at_timestamp: false,
+      enable_updated_at_timestamp: false,
+    }],
+  }];
+
+
   const [applications, setApplications] = useState<Applications>({
     applicationContentArr: [],
     applicationNames: [],
@@ -161,18 +157,18 @@ export default function Home() {
       }
     };
     if (!user) {
-      // if (!localStorage.getItem(getDefaultApplicationRemovedFlag())) {
-      //   setApplications({
-      //     applicationNames: [DEFAULT_APPLICATION],
-      //     applicationContentArr: [],
-      //   })
-      // } 
       setIsBlurred(false);
+      if (!localStorage.getItem(getDefaultApplicationRemovedFlag())) {
+        setApplications({
+          applicationNames: DEFAULT_APPLICATION_NAMES,
+          applicationContentArr: DEFAULT_APPLICATION_CONTENT_ARR,
+        })
+      } 
     } else {
       initializeUser();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded, user, presetApplications]);
+  }, [isLoaded, user]);
 
   const onSelectApplication = async (applicationName: string) => {
     const loadingToast = toast({
@@ -224,6 +220,12 @@ export default function Home() {
   };
 
   const onRemoveApplication = async (applicationName: string) => {
+
+    // Once users remove the default application, we will never automatically select it again for them in the future
+    if (DEFAULT_APPLICATION_NAMES.includes(applicationName)) {
+      localStorage.setItem(getDefaultApplicationRemovedFlag(), "true");
+    }
+
     try {
       const updatedApplications: string[] =
         applications.applicationNames.filter((app) => app !== applicationName);
