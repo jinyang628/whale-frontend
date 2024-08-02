@@ -14,6 +14,6 @@ export function getUsageFlag() {
     return "allWhaleUsage";
 }
 
-export function getDefaultApplicationFlag() {
-    return `whaleDefaultApplication`;
+export function getDefaultApplicationRemovedFlag() {
+    return `whaleDefaultApplicationRemoved`;
 }

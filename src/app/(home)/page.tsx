@@ -18,12 +18,67 @@ import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
 import Blur from "@/components/shared/blur";
-import { getHomePageSelectedApplicationsFlag } from "@/types/flags";
+import { getDefaultApplicationRemovedFlag, getHomePageSelectedApplicationsFlag } from "@/types/flags";
 
 interface Applications {
   applicationContentArr: ApplicationContent[];
   applicationNames: string[];
 }
+
+// const DEFAULT_APPLICATION_NAMES = ["reading_list"];
+// const DEFAULT_APPLICATION_CONTENT_ARR: [
+//   ApplicationContent(
+//     name: "reading_list",
+//     tables: [{
+//       name: "articles",
+//       description: "This table stores information about articles in the reading list.",
+//       columns: [
+//         {
+//           name: "title",
+//           data_type: "string",
+//           enum_values: null,
+//           nullable: false,
+//           default_value: "",
+//           unique: false,
+//           foreign_key: null
+//         },
+//         {
+//           name: "reading_progress",
+//           data_type: "integer",
+//           enum_values: null,
+//           nullable: false,
+//           default_value: 0,
+//           unique: false,
+//           foreign_key: null
+//         },
+//         {
+//           name: "reading_progress",
+//           data_type: "integer",
+//           nullable: false,
+//           default_value: 0,
+//           unique: false,
+//         },
+//         {
+//           name: "recommendation",
+//           data_type: "enum",
+//           enum_values: ["recommended", "not recommended", "must-read"],
+//           nullable: false,
+//           default_value: "recommended",
+//           unique: false,
+//         },
+//       ],
+//       primary_key: "auto_increment",
+//       enable_created_at_timestamp: false,
+//       enable_updated_at_timestamp: false,
+    
+//     primary_key: "auto_increment",
+//     enable_created_at_timestamp: false,
+//     enable_updated_at_timestamp: false,
+//     }],
+//   )
+// ]
+
+
 
 export default function Home() {
   const [applications, setApplications] = useState<Applications>({
@@ -106,10 +161,17 @@ export default function Home() {
       }
     };
     if (!user) {
+      // if (!localStorage.getItem(getDefaultApplicationRemovedFlag())) {
+      //   setApplications({
+      //     applicationNames: [DEFAULT_APPLICATION],
+      //     applicationContentArr: [],
+      //   })
+      // } 
       setIsBlurred(false);
     } else {
       initializeUser();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, user, presetApplications]);
 
   const onSelectApplication = async (applicationName: string) => {
@@ -129,6 +191,7 @@ export default function Home() {
       const selectApplicationResponse = await selectApplication(
         parsedSelectApplicationRequest,
       );
+      console.log(JSON.stringify(selectApplicationResponse.application));
 
       if (!applications.applicationNames.includes(applicationName)) {
         const allApplicationNames: string[] = [...applications.applicationNames, applicationName]
