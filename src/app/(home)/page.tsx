@@ -18,6 +18,7 @@ import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
 import LoadingBlur from "@/components/shared/loading-blur";
+import { getHomePageSelectedApplicationsFlag } from "@/types/flags";
 
 interface Applications {
   applicationContentArr: ApplicationContent[];
@@ -72,7 +73,7 @@ export default function Home() {
 
         // Mark as initialized
         isInitializedRef.current = true;
-        localStorage.setItem(`allSelectedWhaleApplicationNames${user?.id}`, JSON.stringify(newApplicationNames));
+        localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(newApplicationNames));
       } catch (error) {
         toast({
           title: "Error fetching cached applications",
@@ -83,7 +84,7 @@ export default function Home() {
         setIsBlurred(false);
       }
     },
-    [applications, user],
+    [applications.applicationNames],
   );
 
   useEffect(() => {
@@ -137,7 +138,8 @@ export default function Home() {
           applicationNames: allApplicationNames,
           applicationContentArr: allApplicationContentArr,
         });
-        localStorage.setItem(`allSelectedWhaleApplicationNames${user?.id}`, JSON.stringify(allApplicationNames));
+        // Need to set again even though this is from cache because of automatic cache insertion from creation tab
+        localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(allApplicationNames));
       }
     } catch (error) {
       if (error instanceof ZodError) {

@@ -6,6 +6,7 @@ import { ReverseActionWrapper, reverseActionWrapperSchema } from "@/types/api/me
 import { toast } from "@/components/ui/use-toast";
 import { UseMessage } from "@/types/api/message/use";
 import { sendUseMessage } from "@/api/home/message/use";
+import { getHomePageChatHistoryFlag, getHomePageReverseStackFlag } from "@/types/flags";
 
 interface ChatSectionProps {
   applicationNames: string[];
@@ -23,8 +24,6 @@ export default function HomeChatSection({
   userId,
   profileImageUrl,
 }: ChatSectionProps) {
-  const HOME_PAGE_CHAT_HISTORY_FLAG = `allWhaleHomePageChatHistory${userId || ""}`
-  const HOME_PAGE_REVERSE_STACK_FLAG = `allWhaleHomePageReverseStack${userId || ""}`
 
   const [chatHistoryState, setChatHistoryState] = useState<ChatHistoryState>({
     chatHistory: [],
@@ -32,13 +31,13 @@ export default function HomeChatSection({
   });
 
   useEffect(() => {
-    const storedChatHistoryString: string[] = JSON.parse(localStorage.getItem(HOME_PAGE_CHAT_HISTORY_FLAG) || "[]");
+    const storedChatHistoryString: string[] = JSON.parse(localStorage.getItem(getHomePageChatHistoryFlag(userId)) || "[]");
     const storedChatHistory: UseMessage[] = [];
     for (let i = 0; i < storedChatHistoryString.length; i++) {
       storedChatHistory[i] = useMessageSchema.parse(storedChatHistoryString[i]);
     }
 
-    const storedReverseStackString: string[] = JSON.parse(localStorage.getItem(HOME_PAGE_REVERSE_STACK_FLAG) || "[]");
+    const storedReverseStackString: string[] = JSON.parse(localStorage.getItem(getHomePageReverseStackFlag(userId)) || "[]");
     const storedReverseStack: ReverseActionWrapper[] = [];
     for (let i = 0; i < storedReverseStackString.length; i++) {
       storedReverseStack[i] = reverseActionWrapperSchema.parse(storedReverseStackString[i]);
@@ -48,7 +47,7 @@ export default function HomeChatSection({
       chatHistory: storedChatHistory,
       reverseStack: storedReverseStack,
     });
-  }, [HOME_PAGE_CHAT_HISTORY_FLAG, HOME_PAGE_REVERSE_STACK_FLAG, userId])
+  }, [userId])
 
   const sendMessage = async (message: string) => {
     const loadingToast = toast({
@@ -69,8 +68,8 @@ export default function HomeChatSection({
         chatHistory: sendMessageResponse.chat_history,
         reverseStack: sendMessageResponse.reverse_stack,
       });
-      localStorage.setItem(`allWhaleHomePageChatHistory${userId}`, JSON.stringify(sendMessageResponse.chat_history));
-      localStorage.setItem(`allWhaleHomePageReverseStack${userId}`, JSON.stringify(sendMessageResponse.reverse_stack));
+      localStorage.setItem(getHomePageChatHistoryFlag(userId), JSON.stringify(sendMessageResponse.chat_history));
+      localStorage.setItem(getHomePageReverseStackFlag(userId), JSON.stringify(sendMessageResponse.reverse_stack));
     } catch (error) {
       toast({
         title: "Inference Error",
@@ -98,8 +97,8 @@ export default function HomeChatSection({
         profileImageUrl={profileImageUrl}
         updateChatHistoryState={updateChatHistoryState}
         onReset={() => {
-          localStorage.setItem(`allWhaleHomePageChatHistory${userId}`, "[]");
-          localStorage.setItem(`allWhaleHomePageReverseStack${userId}`, "[]");
+          localStorage.setItem(getHomePageChatHistoryFlag(userId), "[]");
+          localStorage.setItem(getHomePageReverseStackFlag(userId), "[]");
           setChatHistoryState({
             chatHistory: [],
             reverseStack: [],

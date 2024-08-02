@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
 import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
 import { updateCache } from "@/api/home/user/update-cache";
+import { getHomePageSelectedApplicationsFlag } from "@/types/flags";
 
 type CreationChatSectionProps = {
   applicationName: string;
@@ -26,7 +27,7 @@ export default function CreationChatSection({
   const [chatHistory, setChatHistory] = useState<CreateMessage[]>([
     {
       role: "assistant",
-      content: `Hello ${user?.firstName}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
+      content: `Hello ${user?.firstName || ""}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
       application_content: null,
     },
   ]);
@@ -43,7 +44,7 @@ export default function CreationChatSection({
         const imageUrl = googleAccount?.imageUrl || user.imageUrl;
         setProfileImageUrl(imageUrl);
 
-        const selectedApplicationNamesString: string = localStorage.getItem(`allSelectedWhaleApplicationNames${user?.id}`) || "[]";
+        const selectedApplicationNamesString: string = localStorage.getItem(getHomePageSelectedApplicationsFlag(user?.id)) || "[]";
         const selectedApplicationNames: string[] = JSON.parse(selectedApplicationNamesString);
         setSelectedApplicationNames(selectedApplicationNames);
 
@@ -124,7 +125,7 @@ export default function CreationChatSection({
     setChatHistory([
       {
         role: "assistant",
-        content: `Hello ${user?.firstName}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
+        content: `Hello ${user?.firstName || ""}! I'm here to help you build your application named ${applicationName}. Please describe your requirements in detail.`,
         application_content: null,
       },
     ]);
