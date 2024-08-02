@@ -26,7 +26,6 @@ interface Applications {
 }
 
 export default function Home() {
-  const DEFAULT_APPLICATION_NAMES = ["reading_list"];
   const DEFAULT_APPLICATION_CONTENT_ARR: ApplicationContent[] = [{
     name: "reading_list",
     tables: [{
@@ -75,7 +74,11 @@ export default function Home() {
       enable_updated_at_timestamp: false,
     }],
   }];
-
+  const DEFAULT_APPLICATION_NAMES: string[] = ["reading_list"];
+  const DEFAULT_APPLICATIONS: Applications = {
+    applicationContentArr: DEFAULT_APPLICATION_CONTENT_ARR,
+    applicationNames: DEFAULT_APPLICATION_NAMES,
+  }
 
   const [applications, setApplications] = useState<Applications>({
     applicationContentArr: [],
@@ -123,6 +126,8 @@ export default function Home() {
 
         // Mark as initialized
         isInitializedRef.current = true;
+
+        // Important to store this for cache update in creation tab
         if (userId) {
           localStorage.setItem(getHomePageSelectedApplicationsFlag(userId), JSON.stringify(newApplicationNames));
         }
@@ -156,14 +161,11 @@ export default function Home() {
         }
       }
     };
+    if (!localStorage.getItem(getDefaultApplicationRemovedFlag())) {
+      setApplications(DEFAULT_APPLICATIONS);
+    } 
     if (!user) {
       setIsBlurred(false);
-      if (!localStorage.getItem(getDefaultApplicationRemovedFlag())) {
-        setApplications({
-          applicationNames: DEFAULT_APPLICATION_NAMES,
-          applicationContentArr: DEFAULT_APPLICATION_CONTENT_ARR,
-        })
-      } 
     } else {
       initializeUser();
     }
@@ -187,7 +189,6 @@ export default function Home() {
       const selectApplicationResponse = await selectApplication(
         parsedSelectApplicationRequest,
       );
-      console.log(JSON.stringify(selectApplicationResponse.application));
 
       if (!applications.applicationNames.includes(applicationName)) {
         const allApplicationNames: string[] = [...applications.applicationNames, applicationName]
@@ -220,7 +221,6 @@ export default function Home() {
   };
 
   const onRemoveApplication = async (applicationName: string) => {
-
     // Once users remove the default application, we will never automatically select it again for them in the future
     if (DEFAULT_APPLICATION_NAMES.includes(applicationName)) {
       localStorage.setItem(getDefaultApplicationRemovedFlag(), "true");

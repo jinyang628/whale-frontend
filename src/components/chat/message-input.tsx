@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "../ui/textarea";
+import { getDefaultApplicationRemovedFlag } from "@/types/flags";
 
 type MessageInputProps = {
   placeholder: string;
@@ -13,7 +14,30 @@ export default function MessageInput({
   isContextReady,
   sendMessage,
 }: MessageInputProps) {
+  const DEFAULT_MESSAGE = "Get me all articles"
   const [message, setMessage] = useState<string>("");
+
+  useEffect(() => {
+    if (localStorage.getItem(getDefaultApplicationRemovedFlag())) {
+      return;
+    }
+
+    let timeoutId: NodeJS.Timeout;
+    const streamMessage = (index: number) => {
+      if (index < DEFAULT_MESSAGE.length) {
+        setMessage(DEFAULT_MESSAGE.slice(0, index + 1));
+        timeoutId = setTimeout(() => streamMessage(index + 1), 50);
+      }
+    };
+
+    const delayBeforeStreaming = 1500;
+
+    timeoutId = setTimeout(() => {
+      streamMessage(0);
+    }, delayBeforeStreaming);
+
+    return () => clearTimeout(timeoutId);
+  }, []);
 
   const onSubmit = async () => {
     if (message.trim()) {

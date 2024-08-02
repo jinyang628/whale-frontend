@@ -6,7 +6,7 @@ import { ReverseActionWrapper, reverseActionWrapperSchema } from "@/types/api/me
 import { toast } from "@/components/ui/use-toast";
 import { UseMessage } from "@/types/api/message/use";
 import { sendUseMessage } from "@/api/home/message/use";
-import { getHomePageChatHistoryFlag, getHomePageReverseStackFlag, getUsageFlag } from "@/types/flags";
+import { getDefaultApplicationRemovedFlag, getHomePageChatHistoryFlag, getHomePageReverseStackFlag, getUsageFlag } from "@/types/flags";
 import Blur from "@/components/shared/blur";
 
 interface HomeChatSectionProps {
@@ -27,6 +27,21 @@ export default function HomeChatSection({
   userId,
   profileImageUrl,
 }: HomeChatSectionProps) {
+  const DEFAULT_CHAT_HISTORY: UseMessage[] = [
+    {
+      "role":"assistant",
+      "content":`Hello ${userId || ""}! Since this is your first time using Whale, I have selected an application named reading_list for you to try out. Enter your first command!`
+    }
+  ];
+  const DEFAULT_REVERSE_STACK: ReverseActionWrapper[] = [
+    {
+      "action": {"action_type":"get"}
+    }
+  ];
+  const DEFAULT_CHAT_HISTORY_STATE: ChatHistoryState = {
+    chatHistory: DEFAULT_CHAT_HISTORY,
+    reverseStack: DEFAULT_REVERSE_STACK,
+  }
 
   const [chatHistoryState, setChatHistoryState] = useState<ChatHistoryState>({
     chatHistory: [],
@@ -35,6 +50,9 @@ export default function HomeChatSection({
   const [allowUntrackedUsage, setAllowUntrackedUsage] = useState<boolean>(true);
 
   useEffect(() => {
+    if (!localStorage.getItem(getDefaultApplicationRemovedFlag())) {
+      setChatHistoryState(DEFAULT_CHAT_HISTORY_STATE);
+    } 
     if (!userId) {
       return;
     }
@@ -55,6 +73,7 @@ export default function HomeChatSection({
       chatHistory: storedChatHistory,
       reverseStack: storedReverseStack,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId])
 
   const sendMessage = async (message: string) => {

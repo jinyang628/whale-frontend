@@ -15,5 +15,5 @@ export function getUsageFlag() {
 }
 
 export function getDefaultApplicationRemovedFlag() {
-    return `whaleDefaultApplicationRemoved`;
+    return "whaleDefaultApplicationRemoved";
 }

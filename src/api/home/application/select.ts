@@ -16,7 +16,6 @@ export async function selectApplication(
 ): Promise<SelectApplicationResponse> {
   try {
     const response = await axios.post(`${BASE_URL}/${SERVICE_ENDPOINT}`, input);
-    console.log(response);
     const selectApplicationResponse = selectApplicationResponseSchema.parse(
       response.data,
     );

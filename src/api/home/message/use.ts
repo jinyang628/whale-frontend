@@ -15,7 +15,6 @@ export async function sendUseMessage(input: UseRequest): Promise<UseResponse> {
   try {
     const response = await axios.post(`${BASE_URL}/${SERVICE_ENDPOINT}`, input);
     const sendMessageResponse = useResponseSchema.parse(response.data);
-    console.log(sendMessageResponse);
     return sendMessageResponse;
     // TODO: More robust error handling + consider whether we want to rethrow it
   } catch (error) {
