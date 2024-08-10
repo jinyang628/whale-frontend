@@ -11,6 +11,8 @@ import { Integration } from "@/types/api/integration/base";
 interface MenuSectionProps {
   onSelectApplication: (applicationName: string) => void;
   onRemoveApplication: (applicationName: string) => void;
+  onSelectIntegration: (integration: Integration) => void;
+  selectedIntegrations: Integration[];
   applicationNames: string[];
   applicationContentArr: ApplicationContent[];
 }
@@ -24,6 +26,8 @@ interface MenuState {
 export default function MenuSection({
   onSelectApplication,
   onRemoveApplication,
+  onSelectIntegration,
+  selectedIntegrations,
   applicationNames,
   applicationContentArr,
 }: MenuSectionProps) {
@@ -33,23 +37,6 @@ export default function MenuSection({
     visibleTable: "",
     allTables: [],
   });
-  const [selectedIntegrations, setSelectedIntegrations] = useState<
-    Set<Integration>
-  >(new Set());
-
-  const onSelectIntegration = async (integration: Integration) => {
-    try {
-      let updatedIntegrations: Set<Integration> = new Set(selectedIntegrations);
-      if (selectedIntegrations.has(integration)) {
-        updatedIntegrations = new Set(Array.from(selectedIntegrations).filter(integration => integration !== integration));
-      } else {
-        updatedIntegrations = selectedIntegrations.add(integration);
-      }
-      setSelectedIntegrations(updatedIntegrations);
-    } catch (error) {
-      console.error(error)
-    }
-  };
 
   const onSubmit = async () => {
     if (applicationName.trim()) {

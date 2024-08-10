@@ -88,8 +88,26 @@ export default function Home() {
   const [userId, setUserId] = useState<string | null>(null);
   const [isBlurred, setIsBlurred] = useState<boolean>(true);
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
-  const { user, isLoaded } = useUser();
   const isInitializedRef = useRef(false);
+  const { user, isLoaded } = useUser();
+  const [selectedIntegrations, setSelectedIntegrations] = useState<
+    Integration[]
+  >([]);
+
+  const onSelectIntegration = async (integration: Integration) => {
+    try {
+      let updatedIntegrations: Integration[] = selectedIntegrations;
+      if (selectedIntegrations.includes(integration)) {
+        updatedIntegrations = selectedIntegrations.filter(int => int !== integration);
+      } else {
+        updatedIntegrations = [...selectedIntegrations, integration];
+      }
+      console.log(updatedIntegrations)
+      setSelectedIntegrations(updatedIntegrations);
+    } catch (error) {
+      console.error(error)
+    }
+  };
 
   const presetApplications = useCallback(
     async (userId: string, userEmail: string) => {
@@ -262,11 +280,14 @@ export default function Home() {
         <MenuSection
           onSelectApplication={onSelectApplication}
           onRemoveApplication={onRemoveApplication}
+          onSelectIntegration={onSelectIntegration}
+          selectedIntegrations={selectedIntegrations}
           applicationNames={applications.applicationNames}
           applicationContentArr={applications.applicationContentArr}
         />
         <HomeChatSection
           applicationNames={applications.applicationNames}
+          integrations={selectedIntegrations}
           userId={userId}
           profileImageUrl={profileImageUrl}
         />

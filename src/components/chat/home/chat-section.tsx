@@ -9,9 +9,11 @@ import { sendUseMessage } from "@/api/home/message/use";
 import { getDefaultApplicationRemovedFlag, getHomePageChatHistoryFlag, getHomePageReverseStackFlag, getUsageFlag } from "@/types/flags";
 import Blur from "@/components/shared/blur";
 import { roleSchema } from "@/types/api/message/shared";
+import { Integration } from "@/types/api/integration/base";
 
 interface HomeChatSectionProps {
   applicationNames: string[];
+  integrations: Integration[];
   userId: string | null;
   profileImageUrl: string;
 }
@@ -25,6 +27,7 @@ const ANONYMOUS_USAGE_LIMIT = 20;
 
 export default function HomeChatSection({
   applicationNames,
+  integrations,
   userId,
   profileImageUrl,
 }: HomeChatSectionProps) {
@@ -150,7 +153,7 @@ export default function HomeChatSection({
             />
             <MessageInput
               placeholder="Enter instruction here..."
-              isContextReady={applicationNames.length >= 0}
+              isContextReady={applicationNames.length > 0 || integrations.length > 0}
               sendMessage={sendMessage}
             />
           </>

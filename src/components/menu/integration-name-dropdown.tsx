@@ -7,10 +7,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Integration, integrationEnum } from "@/types/api/integration/base";
-import { useState } from "react";
 
 interface IntegrationNameDropdownProps {
-  selectedIntegrations: Set<Integration>;
+  selectedIntegrations: Integration[];
   onSelectIntegration: (integration: Integration) => void;
 }
 
@@ -18,10 +17,9 @@ export function IntegrationNameDropdown({
   selectedIntegrations,
   onSelectIntegration,
 }: IntegrationNameDropdownProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  
+
   return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex flex-col">
           <Button 
@@ -36,8 +34,11 @@ export function IntegrationNameDropdown({
         {Object.values(integrationEnum.Values).map((integration) => (
           <DropdownMenuCheckboxItem
             key={integration}
-            checked={selectedIntegrations.has(integration)}
-            onCheckedChange={() => onSelectIntegration(integration)}
+            checked={selectedIntegrations.includes(integration)}
+            onSelect={(event) => {
+              event.preventDefault();
+              onSelectIntegration(integration);
+            }}
           >
             {integration}
           </DropdownMenuCheckboxItem>
