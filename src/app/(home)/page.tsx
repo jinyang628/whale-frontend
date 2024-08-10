@@ -20,6 +20,7 @@ import { getCache } from "@/api/home/user/get-cache";
 import Blur from "@/components/shared/blur";
 import { getDefaultApplicationRemovedFlag, getHomePageSelectedApplicationsFlag } from "@/types/flags";
 import { Integration } from "@/types/api/integration/base";
+import LinearIssues from "@/components/integration/linear/issues";
 
 interface Applications {
   applicationContentArr: ApplicationContent[];
@@ -275,6 +276,7 @@ export default function Home() {
 
   return (
     <div className={`flex flex-col h-screen w-full p-[2%]`}>
+      {/* <LinearIssues/> */}
       <HeaderButtons />
       <div>
         <MenuSection
