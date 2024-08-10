@@ -4,7 +4,7 @@ import {
   UseRequest,
   UseResponse,
   useResponseSchema,
-} from "@/types/api/message/use";
+} from "@/types/actions/message/use";
 
 import axios from "axios";
 

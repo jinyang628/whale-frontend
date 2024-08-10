@@ -18,7 +18,7 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import {
   FeedbackRequest,
   feedbackRequestSchema,
-} from "@/types/api/feedback/form";
+} from "@/types/actions/feedback/form";
 
 interface ReportFormProps {
   handleSubmitFeedback: (values: FeedbackRequest) => void;

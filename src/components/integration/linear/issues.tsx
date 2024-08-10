@@ -1,4 +1,4 @@
-import callLinear from '@/api/linear';
+import callLinear from '@/actions/linear';
 import { useEffect, useState } from 'react';
 
 function LinearIssues() {

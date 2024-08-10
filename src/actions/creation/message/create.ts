@@ -4,7 +4,7 @@ import {
   CreateRequest,
   CreateResponse,
   createResponseSchema,
-} from "@/types/api/message/create";
+} from "@/types/actions/message/create";
 
 import axios from "axios";
 

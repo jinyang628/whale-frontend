@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Integration, integrationEnum } from "@/types/api/integration/base";
+import { Integration, integrationEnum } from "@/types/actions/integration/base";
 
 interface IntegrationNameDropdownProps {
   selectedIntegrations: Integration[];

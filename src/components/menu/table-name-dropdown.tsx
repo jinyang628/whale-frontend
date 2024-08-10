@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
-import { Table } from "@/types/api/application/base";
+import { Table } from "@/types/actions/application/base";
 import { useState } from "react";
 
 interface TableNameDropdownProps {

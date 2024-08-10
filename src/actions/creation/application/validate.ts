@@ -1,25 +1,25 @@
 "use server";
 
 import {
-  GetCacheRequest,
-  getCacheResponseSchema,
-  GetCacheResponse,
-} from "@/types/api/user/get-cache";
+  ValidateRequest,
+  validateResponseSchema,
+  ValidateResponse,
+} from "@/types/actions/application/validate";
 
 import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
-const SERVICE_ENDPOINT = "user/cache/get";
+const SERVICE_ENDPOINT = "application/validate";
 
-export async function getCache(
-  input: GetCacheRequest,
-): Promise<GetCacheResponse> {
+export async function validate(
+  input: ValidateRequest,
+): Promise<ValidateResponse> {
   try {
     const response = await axios.get(`${BASE_URL}/${SERVICE_ENDPOINT}`, {
       params: input,
     });
-    const getUserCache = getCacheResponseSchema.parse(response.data);
-    return getUserCache;
+    const validateResponse = validateResponseSchema.parse(response.data);
+    return validateResponse;
     // TODO: More robust error handling + consider whether we want to rethrow it
   } catch (error) {
     console.error(error);

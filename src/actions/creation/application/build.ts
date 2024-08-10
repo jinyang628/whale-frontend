@@ -1,6 +1,6 @@
 "use server";
 
-import { ApplicationContent } from "@/types/api/application/base";
+import { ApplicationContent } from "@/types/actions/application/base";
 
 import axios from "axios";
 

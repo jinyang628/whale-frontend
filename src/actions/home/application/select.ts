@@ -4,7 +4,7 @@ import {
   SelectApplicationRequest,
   SelectApplicationResponse,
   selectApplicationResponseSchema,
-} from "@/types/api/application/select";
+} from "@/types/actions/application/select";
 
 import axios from "axios";
 

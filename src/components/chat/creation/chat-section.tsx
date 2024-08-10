@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import MessageInput from "../message-input";
-import { CreateMessage, createRequestSchema } from "@/types/api/message/create";
+import { CreateMessage, createRequestSchema } from "@/types/actions/message/create";
 import { toast } from "@/components/ui/use-toast";
 import { ZodError } from "zod";
-import { sendCreateMessage } from "@/api/creation/message/create";
+import { sendCreateMessage } from "@/actions/creation/message/create";
 import CreationChatContainer from "./chat-container";
-import { ApplicationContent } from "@/types/api/application/base";
-import { build } from "@/api/creation/application/build";
+import { ApplicationContent } from "@/types/actions/application/base";
+import { build } from "@/actions/creation/application/build";
 import { useUser } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button";
 import { Pen } from "lucide-react";
-import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
-import { updateCache } from "@/api/home/user/update-cache";
+import { updateCacheRequestSchema } from "@/types/actions/user/update-cache";
+import { updateCache } from "@/actions/home/user/update-cache";
 import { getHomePageSelectedApplicationsFlag } from "@/types/flags";
 
 type CreationChatSectionProps = {

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import MessageInput from "../message-input";
 import HomeChatContainer from "./chat-container";
-import { useMessageSchema, useRequestSchema } from "@/types/api/message/use";
-import { ReverseActionWrapper, reverseActionWrapperSchema } from "@/types/api/message/reverse";
+import { useMessageSchema, useRequestSchema } from "@/types/actions/message/use";
+import { ReverseActionWrapper, reverseActionWrapperSchema } from "@/types/actions/message/reverse";
 import { toast } from "@/components/ui/use-toast";
-import { UseMessage } from "@/types/api/message/use";
-import { sendUseMessage } from "@/api/home/message/use";
+import { UseMessage } from "@/types/actions/message/use";
+import { sendUseMessage } from "@/actions/home/message/use";
 import { getDefaultApplicationRemovedFlag, getHomePageChatHistoryFlag, getHomePageReverseStackFlag, getUsageFlag } from "@/types/flags";
 import Blur from "@/components/shared/blur";
-import { roleSchema } from "@/types/api/message/shared";
-import { Integration } from "@/types/api/integration/base";
+import { roleSchema } from "@/types/actions/message/shared";
+import { Integration } from "@/types/actions/integration/base";
 
 interface HomeChatSectionProps {
   applicationNames: string[];

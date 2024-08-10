@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import ReportForm from "./report-form";
 import { useState } from "react";
-import { FeedbackRequest } from "@/types/api/feedback/form";
-import { submitFeedback } from "@/api/feedback/submit";
+import { FeedbackRequest } from "@/types/actions/feedback/form";
+import { submitFeedback } from "@/actions/feedback/submit";
 
 export default function ReportButton() {
   const [open, setOpen] = useState<boolean>(false);

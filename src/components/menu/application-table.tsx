@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Table, Column } from "@/types/api/application/base";
+import { Table, Column } from "@/types/actions/application/base";
 import { HelpCircle } from "lucide-react";
 import {
   Tooltip,

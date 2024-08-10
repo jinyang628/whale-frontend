@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { UseMessage } from "@/types/api/message/use";
-import { ReverseActionWrapper } from "@/types/api/message/reverse";
+import { UseMessage } from "@/types/actions/message/use";
+import { ReverseActionWrapper } from "@/types/actions/message/reverse";
 import HomeMessageBlock from "./message-block";
 import { deepCopy } from "@/lib/utils";
-import { reverseInference } from "@/api/home/message/reverse";
+import { reverseInference } from "@/actions/home/message/reverse";
 import { Button } from "@/components/ui/button";
-import { roleSchema } from "@/types/api/message/shared";
+import { roleSchema } from "@/types/actions/message/shared";
 
 type UsageChatContainerProps = {
   chatHistory: UseMessage[];

@@ -1,25 +1,25 @@
 "use client";
 
-import { selectApplication } from "@/api/home/application/select";
+import { selectApplication } from "@/actions/home/application/select";
 import HomeChatSection from "@/components/chat/home/chat-section";
 import MenuSection from "@/components/menu/menu-section";
 import { Toaster } from "@/components/ui/toaster";
 import { toast } from "@/components/ui/use-toast";
-import { ApplicationContent } from "@/types/api/application/base";
+import { ApplicationContent } from "@/types/actions/application/base";
 import {
   SelectApplicationResponse,
   selectApplicationRequestSchema,
-} from "@/types/api/application/select";
+} from "@/types/actions/application/select";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ZodError } from "zod";
 import { useUser } from "@clerk/clerk-react";
 import HeaderButtons from "@/components/shared/header/header-buttons";
-import { updateCacheRequestSchema } from "@/types/api/user/update-cache";
-import { updateCache } from "@/api/home/user/update-cache";
-import { getCache } from "@/api/home/user/get-cache";
+import { updateCacheRequestSchema } from "@/types/actions/user/update-cache";
+import { updateCache } from "@/actions/home/user/update-cache";
+import { getCache } from "@/actions/home/user/get-cache";
 import Blur from "@/components/shared/blur";
 import { getDefaultApplicationRemovedFlag, getHomePageSelectedApplicationsFlag } from "@/types/flags";
-import { Integration, integrationEnum } from "@/types/api/integration/base";
+import { Integration, integrationEnum } from "@/types/actions/integration/base";
 import { useRouter } from 'next/navigation';
 
 interface Applications {

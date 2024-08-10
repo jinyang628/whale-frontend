@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { tableSchema } from "@/types/api/application/base";
+import { tableSchema } from "@/types/actions/application/base";
 
 const reverseActionSchema = z.object({
   action_type: z.string(),

@@ -2,8 +2,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import debounce from "lodash/debounce";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { validate } from "@/api/creation/application/validate";
-import { validateRequestSchema } from "@/types/api/application/validate";
+import { validate } from "@/actions/creation/application/validate";
+import { validateRequestSchema } from "@/types/actions/application/validate";
 import { ZodError } from "zod";
 import { Loader } from 'lucide-react';
 

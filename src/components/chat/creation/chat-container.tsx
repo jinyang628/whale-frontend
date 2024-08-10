@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CreateMessage } from "@/types/api/message/create";
+import { CreateMessage } from "@/types/actions/message/create";
 import CreateMessageBlock from "./message-block";
-import { ApplicationContent } from "@/types/api/application/base";
+import { ApplicationContent } from "@/types/actions/application/base";
 import { Button } from "@/components/ui/button";
 
 type CreationChatContainerProps = {

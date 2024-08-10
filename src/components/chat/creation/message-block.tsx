@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Wrench } from "lucide-react";
-import { ApplicationContent } from "@/types/api/application/base";
+import { ApplicationContent } from "@/types/actions/application/base";
 import ApplicationContentDisplay from "./application-content-display";
 
 type MessageBlockProps = {

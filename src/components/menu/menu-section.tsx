@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { ApplicationNameDropdown } from "./application-name-dropdown";
 import { TableNameDropdown } from "./table-name-dropdown";
-import { ApplicationContent, Table } from "@/types/api/application/base";
+import { ApplicationContent, Table } from "@/types/actions/application/base";
 import ApplicationTables from "./application-table";
 import { IntegrationNameDropdown } from "./integration-name-dropdown";
-import { Integration } from "@/types/api/integration/base";
+import { Integration } from "@/types/actions/integration/base";
 
 interface MenuSectionProps {
   onSelectApplication: (applicationName: string) => void;

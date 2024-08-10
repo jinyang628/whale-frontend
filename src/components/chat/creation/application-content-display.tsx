@@ -2,7 +2,7 @@ import {
   ApplicationContent,
   Table as TableType,
   Column,
-} from "@/types/api/application/base";
+} from "@/types/actions/application/base";
 import {
   Table,
   TableBody,
