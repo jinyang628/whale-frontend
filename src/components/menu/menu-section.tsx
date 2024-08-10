@@ -5,6 +5,8 @@ import { ApplicationNameDropdown } from "./application-name-dropdown";
 import { TableNameDropdown } from "./table-name-dropdown";
 import { ApplicationContent, Table } from "@/types/api/application/base";
 import ApplicationTables from "./application-table";
+import { IntegrationNameDropdown } from "./integration-name-dropdown";
+import { Integration } from "@/types/api/integration/base";
 
 interface MenuSectionProps {
   onSelectApplication: (applicationName: string) => void;
@@ -31,6 +33,23 @@ export default function MenuSection({
     visibleTable: "",
     allTables: [],
   });
+  const [selectedIntegrations, setSelectedIntegrations] = useState<
+    Set<Integration>
+  >(new Set());
+
+  const onSelectIntegration = async (integration: Integration) => {
+    try {
+      let updatedIntegrations: Set<Integration> = new Set(selectedIntegrations);
+      if (selectedIntegrations.has(integration)) {
+        updatedIntegrations = new Set(Array.from(selectedIntegrations).filter(integration => integration !== integration));
+      } else {
+        updatedIntegrations = selectedIntegrations.add(integration);
+      }
+      setSelectedIntegrations(updatedIntegrations);
+    } catch (error) {
+      console.error(error)
+    }
+  };
 
   const onSubmit = async () => {
     if (applicationName.trim()) {
@@ -85,39 +104,48 @@ export default function MenuSection({
   return (
     <div className="flex flex-col w-full space-y-4 mb-[1%]">
       <div className="flex justify-around items-center">
-        <div className="w-1/2 flex space-x-2">
-          <Input
-            type="application_name"
-            placeholder="Enter application name here..."
-            className="flex-grow mr-[1%]"
-            value={applicationName}
-            onChange={(e) => setApplicationName(e.target.value)}
-            onKeyDown={onKeyDown}
-          />
-          <Button type="submit" onClick={onSubmit}>
-            Add Application
-          </Button>
+        <div className="flex space-x-2">
+          <div className="flex flex-col justify-center">
+              <div className="flex space-x-2 mb-5">
+                <Input
+                  type="application_name"
+                  placeholder="Enter application name here..."
+                  className="flex-grow mr-[1%]"
+                  value={applicationName}
+                  onChange={(e) => setApplicationName(e.target.value)}
+                  onKeyDown={onKeyDown}
+                />
+                <Button type="submit" onClick={onSubmit}>
+                  Add Application
+                </Button>
+              </div>
+              <ApplicationTables 
+                visibleTable={menuState.visibleTable} 
+                allTables={menuState.allTables} 
+              />
+          </div>
         </div>
-        <div className="w-1/3 flex justify-around">
-          <ApplicationNameDropdown
-            applicationNames={applicationNames}
-            visibleApplication={menuState.visibleApplication}
-            updateVisibleApplication={updateVisibleApplication}
-            onRemoveApplication={onRemoveApplication}
-          />
-          <TableNameDropdown
-            allTables={menuState.allTables}
-            visibleTable={menuState.visibleTable}
-            updateVisibleTable={updateVisibleTable}
+        <div className="flex flex-col">
+          <div className="flex space-x-4 mb-4">
+            <ApplicationNameDropdown
+              applicationNames={applicationNames}
+              visibleApplication={menuState.visibleApplication}
+              updateVisibleApplication={updateVisibleApplication}
+              onRemoveApplication={onRemoveApplication}
+            />
+            <TableNameDropdown
+              allTables={menuState.allTables}
+              visibleTable={menuState.visibleTable}
+              updateVisibleTable={updateVisibleTable}
+            />
+          </div>
+          <IntegrationNameDropdown
+            selectedIntegrations={selectedIntegrations}
+            onSelectIntegration={onSelectIntegration}
           />
         </div>
       </div>
-      <div className="flex justify-center">
-        <ApplicationTables 
-          visibleTable={menuState.visibleTable} 
-          allTables={menuState.allTables} 
-        />
-      </div>
+      
     </div>
   );
 }

@@ -19,6 +19,7 @@ import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
 import Blur from "@/components/shared/blur";
 import { getDefaultApplicationRemovedFlag, getHomePageSelectedApplicationsFlag } from "@/types/flags";
+import { Integration } from "@/types/api/integration/base";
 
 interface Applications {
   applicationContentArr: ApplicationContent[];
