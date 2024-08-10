@@ -19,8 +19,8 @@ import { updateCache } from "@/api/home/user/update-cache";
 import { getCache } from "@/api/home/user/get-cache";
 import Blur from "@/components/shared/blur";
 import { getDefaultApplicationRemovedFlag, getHomePageSelectedApplicationsFlag } from "@/types/flags";
-import { Integration } from "@/types/api/integration/base";
-import LinearIssues from "@/components/integration/linear/issues";
+import { Integration, integrationEnum } from "@/types/api/integration/base";
+import { useRouter } from 'next/navigation';
 
 interface Applications {
   applicationContentArr: ApplicationContent[];
@@ -94,13 +94,21 @@ export default function Home() {
   const [selectedIntegrations, setSelectedIntegrations] = useState<
     Integration[]
   >([]);
-
+  const router = useRouter();
+  
   const onSelectIntegration = async (integration: Integration) => {
     try {
       let updatedIntegrations: Integration[] = selectedIntegrations;
       if (selectedIntegrations.includes(integration)) {
         updatedIntegrations = selectedIntegrations.filter(int => int !== integration);
       } else {
+        switch (integration) {
+          case integrationEnum.Values.Linear:
+            router.push('/api/linear/auth/login')
+            break;
+          default:
+            updatedIntegrations = selectedIntegrations;
+        }
         updatedIntegrations = [...selectedIntegrations, integration];
       }
       console.log(updatedIntegrations)
@@ -276,7 +284,6 @@ export default function Home() {
 
   return (
     <div className={`flex flex-col h-screen w-full p-[2%]`}>
-      {/* <LinearIssues/> */}
       <HeaderButtons />
       <div>
         <MenuSection

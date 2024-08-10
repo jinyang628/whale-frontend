@@ -6,6 +6,8 @@ function LinearIssues() {
 
   useEffect(() => {
     async function fetchIssues() {
+
+      
       try {
         const response = await callLinear();
         console.log(response);
