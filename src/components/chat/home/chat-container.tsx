@@ -6,6 +6,7 @@ import HomeMessageBlock from "./message-block";
 import { deepCopy } from "@/lib/utils";
 import { reverseInference } from "@/api/home/message/reverse";
 import { Button } from "@/components/ui/button";
+import { roleSchema } from "@/types/api/message/shared";
 
 type UsageChatContainerProps = {
   chatHistory: UseMessage[];
@@ -43,7 +44,7 @@ export default function HomeChatContainer({
       const currMessage: UseMessage =
         chatHistoryCopy[chatHistoryCopy.length - 1];
       chatHistoryCopy.pop();
-      if (currMessage.role === "user") {
+      if (currMessage.role === roleSchema.Values.user) {
         continue;
       }
       await reverseInference(reverseStackCopy[reverseStackCopy.length - 1]);
@@ -52,11 +53,11 @@ export default function HomeChatContainer({
         continue;
       }
       let exit: boolean = false;
-      while (!exit) {
+      while (!exit && chatHistoryCopy.length > 0) {
         const currMessage: UseMessage =
           chatHistoryCopy[chatHistoryCopy.length - 1];
         chatHistoryCopy.pop();
-        if (currMessage.role === "user") {
+        if (currMessage.role === roleSchema.Values.user) {
           exit = true;
         } else {
           await reverseInference(reverseStackCopy[reverseStackCopy.length - 1]);

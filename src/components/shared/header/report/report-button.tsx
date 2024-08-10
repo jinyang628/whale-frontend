@@ -8,7 +8,7 @@ import {
 import ReportForm from "./report-form";
 import { useState } from "react";
 import { FeedbackRequest } from "@/types/api/feedback/form";
-import { submitFeedback } from "@/api/creation/feedback/submit";
+import { submitFeedback } from "@/api/feedback/submit";
 
 export default function ReportButton() {
   const [open, setOpen] = useState<boolean>(false);

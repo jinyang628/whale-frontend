@@ -8,6 +8,7 @@ import { UseMessage } from "@/types/api/message/use";
 import { sendUseMessage } from "@/api/home/message/use";
 import { getDefaultApplicationRemovedFlag, getHomePageChatHistoryFlag, getHomePageReverseStackFlag, getUsageFlag } from "@/types/flags";
 import Blur from "@/components/shared/blur";
+import { roleSchema } from "@/types/api/message/shared";
 
 interface HomeChatSectionProps {
   applicationNames: string[];
@@ -29,7 +30,7 @@ export default function HomeChatSection({
 }: HomeChatSectionProps) {
   const DEFAULT_CHAT_HISTORY: UseMessage[] = [
     {
-      "role":"assistant",
+      "role": roleSchema.Values.assistant,
       "content":`Hello ${userId || ""}! Since this is your first time using Whale, I have selected an application named reading_list for you to try out. Enter your first command!`
     }
   ];
