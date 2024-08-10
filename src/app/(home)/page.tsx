@@ -98,21 +98,18 @@ export default function Home() {
   
   const onSelectIntegration = async (integration: Integration) => {
     try {
-      let updatedIntegrations: Integration[] = selectedIntegrations;
       if (selectedIntegrations.includes(integration)) {
-        updatedIntegrations = selectedIntegrations.filter(int => int !== integration);
-      } else {
-        switch (integration) {
-          case integrationEnum.Values.Linear:
-            router.push('/api/linear/auth/login')
-            break;
-          default:
-            updatedIntegrations = selectedIntegrations;
-        }
-        updatedIntegrations = [...selectedIntegrations, integration];
+        setSelectedIntegrations(prev => prev.filter(int => int !== integration));
+        return;
       }
-      console.log(updatedIntegrations)
-      setSelectedIntegrations(updatedIntegrations);
+
+      switch (integration) {
+        case integrationEnum.Values.Linear:
+          router.push('/api/linear/auth/login')
+          break;
+        default:
+          break;
+      }
     } catch (error) {
       console.error(error)
     }
@@ -172,6 +169,26 @@ export default function Home() {
     [applications.applicationNames],
   );
 
+  const presetIntegrations = useCallback(
+    async () => {
+      const integrateLinear = async () => {
+        try {
+          const response = await fetch('/api/linear/auth/status');
+          const data = await response.json();
+          if (!data.isAuthenticated) {
+            return;
+          }
+          setSelectedIntegrations([...selectedIntegrations, integrationEnum.Values.Linear]);
+        } catch (error) {
+          console.error('Error checking linear auth status:', error);
+        }
+      };
+
+      integrateLinear();
+    },
+    [selectedIntegrations]
+  );
+
   useEffect(() => {
     const initializeUser = async () => {
       if (isLoaded && user && !isInitializedRef.current) {
@@ -186,6 +203,7 @@ export default function Home() {
           const userId: string = user.id;
           setUserId(userId);
           await presetApplications(userId, email);
+          await presetIntegrations();
         }
       }
     };
